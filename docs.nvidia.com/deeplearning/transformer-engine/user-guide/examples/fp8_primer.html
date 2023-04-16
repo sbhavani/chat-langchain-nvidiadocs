@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Using FP8 with Transformer Engine &mdash; Transformer Engine 0.6.0
+ documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Performance Optimizations" href="advanced_optimizations.html" />
+    <link rel="prev" title="pyTorch" href="../api/pytorch.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" > 
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Transformer Engine
+          </a>
+              <div class="version">
+                0.6.0
+-f18e677<br/>
+Version select: <select onChange="window.location.href = this.value" onFocus="this.selectedIndex = 0">
+    <option value="https://docs.nvidia.com/deeplearning/transformer-engine/user-guide/index.html" selected>Current release</option>
+    <option value="https://docs.nvidia.com/deeplearning/transformer-engine/archives/index.html">Older releases</option>
+</select>
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+  <style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search, .wy-nav-top {
+      background: #76b900;
+    }
+
+    .wy-menu > p > span.caption-text {
+      color: #76b900;
+    }
+
+    .wy-menu-vertical p {
+      height: 32px;
+      line-height: 32px;
+      padding: 0 1.618em;
+      margin: 12px 0 0;
+      display: block;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 85%;
+      white-space: nowrap;
+    }
+
+    .wy-side-nav-search a:link, .wy-nav-top a:link {
+      color: #fff;
+    }
+    .wy-side-nav-search a:visited, .wy-nav-top a:visited {
+      color: #fff;
+    }
+    .wy-side-nav-search a:hover, .wy-nav-top a:hover {
+      color: #fff;
+    }
+
+    .wy-menu-vertical a:link, .wy-menu-vertical a:visited {
+      color: #d9d9d9
+    }
+
+    .wy-menu-vertical a:active {
+      background-color: #76b900
+    }
+
+    .wy-side-nav-search>div.version {
+      color: rgba(0, 0, 0, 0.3)
+    }
+
+    .wy-nav-content {
+      max-width: 1000px;
+    }
+
+    /* override table width restrictions */
+    .wy-table-responsive table td, .wy-table-responsive table th {
+        /* !important prevents the common CSS stylesheets from
+          overriding this as on RTD they are loaded after this stylesheet */
+        white-space: normal !important;
+    }
+
+    .wy-table-responsive {
+        overflow: visible !important;
+    }
+
+  </style>
+  
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#transformer-engine-in-ngc-containers">Transformer Engine in NGC Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#pip-from-github">pip - from GitHub</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#additional-prerequisites">Additional Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#installation-stable-release">Installation (stable release)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#installation-development-build">Installation (development build)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#Overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#Let’s-build-a-Transformer-layer!">Let’s build a Transformer layer!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#Meet-Transformer-Engine">Meet Transformer Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#Fused-TE-Modules">Fused TE Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#Enabling-FP8">Enabling FP8</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python API documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/common.html">Common API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/common.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/common.html#transformer_engine.common.recipe.Format"><code class="docutils literal notranslate"><span class="pre">Format</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/common.html#transformer_engine.common.recipe.DelayedScaling"><code class="docutils literal notranslate"><span class="pre">DelayedScaling</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/framework.html">Framework-specific API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/pytorch.html">pyTorch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/pytorch.html#modules">Modules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.Linear"><code class="docutils literal notranslate"><span class="pre">Linear</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.LayerNorm"><code class="docutils literal notranslate"><span class="pre">LayerNorm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.LayerNormLinear"><code class="docutils literal notranslate"><span class="pre">LayerNormLinear</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.LayerNormMLP"><code class="docutils literal notranslate"><span class="pre">LayerNormMLP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.DotProductAttention"><code class="docutils literal notranslate"><span class="pre">DotProductAttention</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.TransformerLayer"><code class="docutils literal notranslate"><span class="pre">TransformerLayer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api/pytorch.html#functions">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.fp8_autocast"><code class="docutils literal notranslate"><span class="pre">fp8_autocast()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.checkpoint"><code class="docutils literal notranslate"><span class="pre">checkpoint()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples and Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using FP8 with Transformer Engine</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Introduction-to-FP8">Introduction to FP8</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Structure">Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Mixed-precision-training---a-quick-introduction">Mixed precision training - a quick introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Mixed-precision-training-with-FP8">Mixed precision training with FP8</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Using FP8 with Transformer Engine</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#FP8-recipe">FP8 recipe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#FP8-autocasting">FP8 autocasting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Handling-backward-pass">Handling backward pass</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Precision">Precision</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_optimizations.html">Performance Optimizations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="advanced_optimizations.html#Multi-GPU-training">Multi-GPU training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_optimizations.html#Gradient-accumulation-fusion">Gradient accumulation fusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_optimizations.html#FP8-weight-caching">FP8 weight caching</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/c/index.html">C/C++ API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/c/activation.html">activation.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/c/cast.html">cast.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/c/gemm.html">gemm.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/c/layer_norm.html">layer_norm.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/c/softmax.html">softmax.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/c/transformer_engine.html">transformer_engine.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/c/transpose.html">transpose.h</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Transformer Engine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Using FP8 with Transformer Engine</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/examples/fp8_primer.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars and line breaks on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+    white-space: pre;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+.jp-RenderedHTMLCommon thead,
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+.jp-RenderedHTMLCommon th,
+div.rendered_html th {
+  font-weight: bold;
+}
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.jp-RenderedHTMLCommon tbody tr:hover,
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="Using-FP8-with-Transformer-Engine">
+<h1>Using FP8 with Transformer Engine<a class="headerlink" href="#Using-FP8-with-Transformer-Engine" title="Permalink to this heading">¶</a></h1>
+<p>H100 GPU introduced support for a new datatype, FP8 (8-bit floating point), enabling higher throughput of matrix multiplies and convolutions. In this example we will introduce the FP8 datatype and show how to use it with Transformer Engine.</p>
+<section id="Introduction-to-FP8">
+<h2>Introduction to FP8<a class="headerlink" href="#Introduction-to-FP8" title="Permalink to this heading">¶</a></h2>
+<section id="Structure">
+<h3>Structure<a class="headerlink" href="#Structure" title="Permalink to this heading">¶</a></h3>
+<p>The FP8 datatype supported by H100 is actually 2 distinct datatypes, useful in different parts of the training of neural networks:</p>
+<ul class="simple">
+<li><p>E4M3 - it consists of 1 sign bit, 4 exponent bits and 3 bits of mantissa. It can store values up to +/-448 and <code class="docutils literal notranslate"><span class="pre">nan</span></code>.</p></li>
+<li><p>E5M2 - it consists of 1 sign bit, 5 exponent bits and 2 bits of mantissa. It can store values up to +/-57344, +/- <code class="docutils literal notranslate"><span class="pre">inf</span></code> and <code class="docutils literal notranslate"><span class="pre">nan</span></code>. The tradeoff of the increased dynamic range is lower precision of the stored values.</p></li>
+</ul>
+<figure align="center"><p><img alt="0f4b4c2aa0154d1c9776524bbde54360" class="no-scaled-link" src="../_images/fp8_formats.png" style="width: 60%;" /></p>
+<figcaption><p>Figure 1: Structure of the floating point datatypes. All of the values shown (in FP16, BF16, FP8 E4M3 and FP8 E5M2) are the closest representations of value 0.3952.</p>
+</figcaption></figure><p>During training neural networks both of these types may be utilized. Typically forward activations and weights require more precision, so E4M3 datatype is best used during forward pass. In the backward pass, however, gradients flowing through the network typically are less susceptible to the loss of precision, but require higher dynamic range. Therefore they are best stored using E5M2 data format. H100 TensorCores provide support for any combination of these types as the inputs, enabling us to
+store each tensor using its preferred precision.</p>
+</section>
+<section id="Mixed-precision-training---a-quick-introduction">
+<h3>Mixed precision training - a quick introduction<a class="headerlink" href="#Mixed-precision-training---a-quick-introduction" title="Permalink to this heading">¶</a></h3>
+<p>In order to understand how FP8 can be used for training Deep Learning models, it is useful to first remind ourselves how mixed precision works with other datatypes, especially FP16.</p>
+<p>Mixed precision recipe for FP16 training has 2 components: choosing which operations should be performed in FP16 and dynamic loss scaling.</p>
+<ul class="simple">
+<li><p>Choosing the operations to be performed in FP16 precision requires analysis of the numerical behavior of the outputs with respect to inputs of the operation as well as the expected performance benefit. This enables marking operations like matrix multiplies, convolutions and normalization layers as safe, while leaving <code class="docutils literal notranslate"><span class="pre">norm</span></code> or <code class="docutils literal notranslate"><span class="pre">exp</span></code> operations as requiring high precision.</p></li>
+<li><p>Dynamic loss scaling enables avoiding both over- and underflows of the gradients during training. Those may happen since, while the dynamic range of FP16 is enough to store the distribution of the gradient values, this distribution may be centered around values too high or too low for FP16 to handle. Scaling the loss shifts those distributions (without affecting numerics by using only powers of 2) into the range representable in FP16.</p></li>
+</ul>
+<figure align="center"><p><img alt="d90919c29f7346e98aee5d0913a46e3c" class="no-scaled-link" src="../_images/loss_scaling.png" style="width: 50%;" /></p>
+<figcaption><p>Figure 2: Scaling the loss enables shifting the gradient distribution into the representable range of FP16 datatype.</p>
+</figcaption></figure></section>
+<section id="Mixed-precision-training-with-FP8">
+<h3>Mixed precision training with FP8<a class="headerlink" href="#Mixed-precision-training-with-FP8" title="Permalink to this heading">¶</a></h3>
+<p>While the dynamic range provided by the FP8 types is sufficient to store any particular activation or gradient, it is not sufficient for all of them at the same time. This makes the single loss scaling factor strategy, which worked for FP16, infeasible for FP8 training and instead requires using distinct scaling factors for each FP8 tensor.</p>
+<p>There are multiple strategies for choosing a scaling factor that is appropriate for a given FP8 tensor:</p>
+<ul class="simple">
+<li><p>just-in-time scaling. This strategy chooses the scaling factor based on the maximum of absolute values (amax) of the tensor being produced. In practice it is infeasible, as it requires multiple passes through data - the operator produces and writes out the output in higher precision, then the maximum absolute value of the output is found and applied to all values in order to obtain the final FP8 output. This results in a lot of overhead, severely diminishing gains from using FP8.</p></li>
+<li><p>delayed scaling. This strategy chooses the scaling factor based on the maximums of absolute values seen in some number of previous iterations. This enables full performance of FP8 computation, but requires storing the history of maximums as additional parameters of the FP8 operators.</p></li>
+</ul>
+<figure align="center"><p><img alt="c1d3bce4d7364ae8a8c0f98f6eac25b8" class="no-scaled-link" src="../_images/delayed_scaling.png" style="width: 80%;" /></p>
+<figcaption><p>Figure 3: Delayed scaling strategy. The FP8 operator uses scaling factor obtained using the history of amaxes (maximums of absolute values) seen in some number of previous iterations and produces both the FP8 output and the current amax, which gets stored in the history.</p>
+</figcaption></figure><p>As one can see in Figure 3, delayed scaling strategy requires both storing the history of amaxes, but also choosing a recipe for converting that history into the scaling factor used in the next iteration.</p>
+</section>
+</section>
+<section id="id1">
+<h2>Using FP8 with Transformer Engine<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<p>Transformer Engine library provides tools enabling easy to use training with FP8 datatype using delayed scaling strategy.</p>
+<section id="FP8-recipe">
+<h3>FP8 recipe<a class="headerlink" href="#FP8-recipe" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference internal" href="../api/common.html#transformer_engine.common.recipe.DelayedScaling"><span class="std std-ref">DelayedScaling</span></a> recipe from <code class="docutils literal notranslate"><span class="pre">transformer_engine.common.recipe</span></code> module stores all of the required options for FP8 training - length of the amax history to use for scaling factor computation, FP8 data format etc.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformer_engine.common.recipe</span> <span class="kn">import</span> <span class="n">Format</span><span class="p">,</span> <span class="n">DelayedScaling</span>
+
+<span class="n">fp8_format</span> <span class="o">=</span> <span class="n">Format</span><span class="o">.</span><span class="n">HYBRID</span>  <span class="c1"># E4M3 during forward pass, E5M2 during backward pass</span>
+<span class="n">fp8_recipe</span> <span class="o">=</span> <span class="n">DelayedScaling</span><span class="p">(</span><span class="n">fp8_format</span><span class="o">=</span><span class="n">fp8_format</span><span class="p">,</span> <span class="n">amax_history_len</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">amax_compute_algo</span><span class="o">=</span><span class="s2">&quot;max&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>This recipe is then used to configure the FP8 training.</p>
+</section>
+<section id="FP8-autocasting">
+<h3>FP8 autocasting<a class="headerlink" href="#FP8-autocasting" title="Permalink to this heading">¶</a></h3>
+<p>Not every operation is safe to be performed using FP8. All of the modules provided by Transformer Engine library were designed to provide maximum performance benefit from FP8 datatype while maintaining accuracy. In order to enable FP8 operations, TE modules need to be wrapped inside the <a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.fp8_autocast"><span class="std std-ref">fp8_autocast</span></a> context manager.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">transformer_engine.pytorch</span> <span class="k">as</span> <span class="nn">te</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">12345</span><span class="p">)</span>
+
+<span class="n">my_linear</span> <span class="o">=</span> <span class="n">te</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">768</span><span class="p">,</span> <span class="mi">768</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">inp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">((</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">768</span><span class="p">))</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="n">te</span><span class="o">.</span><span class="n">fp8_autocast</span><span class="p">(</span><span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fp8_recipe</span><span class="o">=</span><span class="n">fp8_recipe</span><span class="p">):</span>
+    <span class="n">out_fp8</span> <span class="o">=</span> <span class="n">my_linear</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">fp8_autocast</span></code> context manager hides the complexity of handling FP8:</p>
+<ul class="simple">
+<li><p>All FP8-safe operations have their inputs cast to FP8</p></li>
+<li><p>Amax history is updated</p></li>
+<li><p>New scaling factors are computed and ready for the next iteration</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Note</p>
+<p>Support for FP8 in the Linear layer of Transformer Engine is currently limited to tensors with shapes where both dimensions are divisible by 16. In terms of the input to the full Transformer network, this typically requires padding sequence length to be multiple of 16.</p>
+</div>
+</section>
+<section id="Handling-backward-pass">
+<h3>Handling backward pass<a class="headerlink" href="#Handling-backward-pass" title="Permalink to this heading">¶</a></h3>
+<p>When a model is run inside the <code class="docutils literal notranslate"><span class="pre">fp8_autocast</span></code> region, especially in multi-GPU training, some communication is required in order to synchronize the scaling factors and amax history. In order to perform that communication without introducing much overhead, <code class="docutils literal notranslate"><span class="pre">fp8_autocast</span></code> context manager aggregates the tensors before performing the communication.</p>
+<p>Due to this aggregation the backward call needs to happen outside of the <code class="docutils literal notranslate"><span class="pre">fp8_autocast</span></code> context manager. It has no impact on the computation precision - the precision of the backward pass is determined by the precision of the forward pass.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loss_fp8</span> <span class="o">=</span> <span class="n">out_fp8</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="n">loss_fp8</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>  <span class="c1"># This backward pass uses FP8, since out_fp8 was calculated inside fp8_autocast</span>
+
+<span class="n">out_fp32</span> <span class="o">=</span> <span class="n">my_linear</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
+<span class="n">loss_fp32</span> <span class="o">=</span> <span class="n">out_fp32</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">loss_fp32</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>  <span class="c1"># This backward pass does not use FP8, since out_fp32 was calculated outside fp8_autocast</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Precision">
+<h3>Precision<a class="headerlink" href="#Precision" title="Permalink to this heading">¶</a></h3>
+<p>If we compare the results of the FP32 and FP8 execution, we will see that they are relatively close, but different:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out_fp8</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([[ 0.2276,  0.2627,  0.3001,  ...,  0.0346,  0.2211,  0.1188],
+        [-0.0963, -0.3725,  0.1717,  ...,  0.0901,  0.0522, -0.3472],
+        [ 0.4526,  0.3482,  0.5976,  ..., -0.0687, -0.0382,  0.1566],
+        ...,
+        [ 0.1698,  0.6061,  0.0385,  ..., -0.2875, -0.1152, -0.0260],
+        [ 0.0679,  0.2946,  0.2751,  ..., -0.2284,  0.0517, -0.1441],
+        [ 0.1865,  0.2353,  0.9172,  ...,  0.1085,  0.1135,  0.1438]],
+       device=&#39;cuda:0&#39;, grad_fn=&lt;_LinearBackward&gt;)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out_fp32</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([[ 0.2373,  0.2674,  0.2980,  ...,  0.0233,  0.2498,  0.1131],
+        [-0.0767, -0.3778,  0.1862,  ...,  0.0858,  0.0676, -0.3369],
+        [ 0.4615,  0.3593,  0.5813,  ..., -0.0779, -0.0349,  0.1422],
+        ...,
+        [ 0.1914,  0.6038,  0.0382,  ..., -0.2847, -0.0991, -0.0423],
+        [ 0.0864,  0.2895,  0.2719,  ..., -0.2388,  0.0772, -0.1541],
+        [ 0.2019,  0.2275,  0.9027,  ...,  0.1022,  0.1300,  0.1444]],
+       device=&#39;cuda:0&#39;, grad_fn=&lt;_LinearBackward&gt;)
+</pre></div></div>
+</div>
+<p>That happens because in the FP8 case both the input and weights are cast to FP8 before the computation. We can see this if instead of the original inputs we use the inputs representable in FP8 (using a function defined in <a class="reference external" href="quickstart_utils.py">quickstart_utils.py</a>):</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">quickstart_utils</span> <span class="kn">import</span> <span class="n">cast_to_representable</span>
+
+<span class="n">inp_representable</span> <span class="o">=</span> <span class="n">cast_to_representable</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
+<span class="n">my_linear</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">cast_to_representable</span><span class="p">(</span><span class="n">my_linear</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">out_fp32_representable</span> <span class="o">=</span> <span class="n">my_linear</span><span class="p">(</span><span class="n">inp_representable</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">out_fp32_representable</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([[ 0.2276,  0.2629,  0.3000,  ...,  0.0346,  0.2211,  0.1188],
+        [-0.0963, -0.3724,  0.1717,  ...,  0.0901,  0.0522, -0.3470],
+        [ 0.4526,  0.3479,  0.5976,  ..., -0.0686, -0.0382,  0.1566],
+        ...,
+        [ 0.1698,  0.6062,  0.0385,  ..., -0.2876, -0.1152, -0.0260],
+        [ 0.0679,  0.2947,  0.2750,  ..., -0.2284,  0.0516, -0.1441],
+        [ 0.1865,  0.2353,  0.9170,  ...,  0.1085,  0.1135,  0.1438]],
+       device=&#39;cuda:0&#39;, grad_fn=&lt;_LinearBackward&gt;)
+</pre></div></div>
+</div>
+<p>This time the difference is really small:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out_fp8</span> <span class="o">-</span> <span class="n">out_fp32_representable</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([[ 4.9591e-05, -1.9073e-04,  9.5367e-05,  ..., -3.8147e-06,
+          4.1962e-05,  2.2888e-05],
+        [ 2.2888e-05, -3.4332e-05,  2.2888e-05,  ...,  2.6703e-05,
+          5.3406e-05, -1.4114e-04],
+        [-3.8147e-05,  2.6703e-04, -3.8147e-06,  ..., -5.7220e-05,
+          4.1962e-05, -1.9073e-05],
+        ...,
+        [ 1.1444e-05, -7.2479e-05, -3.8147e-06,  ...,  5.3406e-05,
+         -1.5259e-05,  2.2888e-05],
+        [ 4.9591e-05, -9.5367e-05,  6.8665e-05,  ..., -1.5259e-05,
+          7.6294e-05,  4.5776e-05],
+        [-1.5259e-05, -7.6294e-06,  1.8692e-04,  ..., -3.0518e-05,
+         -4.5776e-05,  7.6294e-06]], device=&#39;cuda:0&#39;, grad_fn=&lt;SubBackward0&gt;)
+</pre></div></div>
+</div>
+<p>The differences in result coming from FP8 execution do not matter during the training process, but it is good to understand them, e.g. during debugging the model.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../api/pytorch.html" class="btn btn-neutral float-left" title="pyTorch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="advanced_optimizations.html" class="btn btn-neutral float-right" title="Performance Optimizations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+  <style>
+  a:link, a:visited {
+    color: #76b900;
+  }
+
+  a:hover {
+    color: #8c0;
+  }
+
+  html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple)>dt {
+    background: rgba(118, 185, 0, 0.1);
+    color: rgba(59,93,0,1);
+    border-top: solid 3px rgba(59,93,0,1);
+  }
+
+  html.writer-html4 .rst-content dl:not(.docutils) .property, html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple) .property {
+    text-transform: capitalize;
+    display: inline-block;
+    padding-right: 8px;
+  }
+  </style>
+
+  
+
+</body>
+</html>

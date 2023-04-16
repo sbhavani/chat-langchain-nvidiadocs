@@ -3,9 +3,18 @@ from langchain.document_loaders import ReadTheDocsLoader
 from langchain.vectorstores.faiss import FAISS
 from langchain.embeddings import OpenAIEmbeddings
 import pickle
+import os
+import json
+
+with open('secrets.json') as f:
+    data = json.load(f)
+
+os.environ['OPENAI_API_KEY'] = data['OPENAI_API_KEY']
+
+docs_url = 'docs.nvidia.com'
 
 # Load Data
-loader = ReadTheDocsLoader("langchain.readthedocs.io")
+loader = ReadTheDocsLoader(docs_url)
 raw_documents = loader.load()
 
 # Split text

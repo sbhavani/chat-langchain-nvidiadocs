@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Index &mdash; Transformer Engine 0.6.0
+ documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" > 
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Transformer Engine
+          </a>
+              <div class="version">
+                0.6.0
+-f18e677<br/>
+Version select: <select onChange="window.location.href = this.value" onFocus="this.selectedIndex = 0">
+    <option value="https://docs.nvidia.com/deeplearning/transformer-engine/user-guide/index.html" selected>Current release</option>
+    <option value="https://docs.nvidia.com/deeplearning/transformer-engine/archives/index.html">Older releases</option>
+</select>
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+  <style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search, .wy-nav-top {
+      background: #76b900;
+    }
+
+    .wy-menu > p > span.caption-text {
+      color: #76b900;
+    }
+
+    .wy-menu-vertical p {
+      height: 32px;
+      line-height: 32px;
+      padding: 0 1.618em;
+      margin: 12px 0 0;
+      display: block;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 85%;
+      white-space: nowrap;
+    }
+
+    .wy-side-nav-search a:link, .wy-nav-top a:link {
+      color: #fff;
+    }
+    .wy-side-nav-search a:visited, .wy-nav-top a:visited {
+      color: #fff;
+    }
+    .wy-side-nav-search a:hover, .wy-nav-top a:hover {
+      color: #fff;
+    }
+
+    .wy-menu-vertical a:link, .wy-menu-vertical a:visited {
+      color: #d9d9d9
+    }
+
+    .wy-menu-vertical a:active {
+      background-color: #76b900
+    }
+
+    .wy-side-nav-search>div.version {
+      color: rgba(0, 0, 0, 0.3)
+    }
+
+    .wy-nav-content {
+      max-width: 1000px;
+    }
+
+    /* override table width restrictions */
+    .wy-table-responsive table td, .wy-table-responsive table th {
+        /* !important prevents the common CSS stylesheets from
+          overriding this as on RTD they are loaded after this stylesheet */
+        white-space: normal !important;
+    }
+
+    .wy-table-responsive {
+        overflow: visible !important;
+    }
+
+  </style>
+  
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#transformer-engine-in-ngc-containers">Transformer Engine in NGC Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#pip-from-github">pip - from GitHub</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#additional-prerequisites">Additional Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#installation-stable-release">Installation (stable release)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#installation-development-build">Installation (development build)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples/quickstart.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/quickstart.html#Overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/quickstart.html#Let’s-build-a-Transformer-layer!">Let’s build a Transformer layer!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/quickstart.html#Meet-Transformer-Engine">Meet Transformer Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/quickstart.html#Fused-TE-Modules">Fused TE Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/quickstart.html#Enabling-FP8">Enabling FP8</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python API documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/common.html">Common API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/common.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/common.html#transformer_engine.common.recipe.Format"><code class="docutils literal notranslate"><span class="pre">Format</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/common.html#transformer_engine.common.recipe.DelayedScaling"><code class="docutils literal notranslate"><span class="pre">DelayedScaling</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/framework.html">Framework-specific API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pytorch.html">pyTorch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/pytorch.html#modules">Modules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/pytorch.html#transformer_engine.pytorch.Linear"><code class="docutils literal notranslate"><span class="pre">Linear</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/pytorch.html#transformer_engine.pytorch.LayerNorm"><code class="docutils literal notranslate"><span class="pre">LayerNorm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/pytorch.html#transformer_engine.pytorch.LayerNormLinear"><code class="docutils literal notranslate"><span class="pre">LayerNormLinear</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/pytorch.html#transformer_engine.pytorch.LayerNormMLP"><code class="docutils literal notranslate"><span class="pre">LayerNormMLP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/pytorch.html#transformer_engine.pytorch.DotProductAttention"><code class="docutils literal notranslate"><span class="pre">DotProductAttention</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/pytorch.html#transformer_engine.pytorch.TransformerLayer"><code class="docutils literal notranslate"><span class="pre">TransformerLayer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/pytorch.html#functions">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/pytorch.html#transformer_engine.pytorch.fp8_autocast"><code class="docutils literal notranslate"><span class="pre">fp8_autocast()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/pytorch.html#transformer_engine.pytorch.checkpoint"><code class="docutils literal notranslate"><span class="pre">checkpoint()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples and Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/fp8_primer.html">Using FP8 with Transformer Engine</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/fp8_primer.html#Introduction-to-FP8">Introduction to FP8</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/fp8_primer.html#Structure">Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/fp8_primer.html#Mixed-precision-training---a-quick-introduction">Mixed precision training - a quick introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/fp8_primer.html#Mixed-precision-training-with-FP8">Mixed precision training with FP8</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/fp8_primer.html#id1">Using FP8 with Transformer Engine</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/fp8_primer.html#FP8-recipe">FP8 recipe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/fp8_primer.html#FP8-autocasting">FP8 autocasting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/fp8_primer.html#Handling-backward-pass">Handling backward pass</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/fp8_primer.html#Precision">Precision</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples/advanced_optimizations.html">Performance Optimizations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/advanced_optimizations.html#Multi-GPU-training">Multi-GPU training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/advanced_optimizations.html#Gradient-accumulation-fusion">Gradient accumulation fusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/advanced_optimizations.html#FP8-weight-caching">FP8 weight caching</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/c/index.html">C/C++ API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/c/activation.html">activation.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/c/cast.html">cast.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/c/gemm.html">gemm.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/c/layer_norm.html">layer_norm.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/c/softmax.html">softmax.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/c/transformer_engine.html">transformer_engine.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/c/transpose.html">transpose.h</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Transformer Engine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Index</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ 
+</div>
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/pytorch.html#transformer_engine.pytorch.checkpoint">checkpoint() (in module transformer_engine.pytorch)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/common.html#transformer_engine.common.recipe.DelayedScaling">DelayedScaling (class in transformer_engine.common.recipe)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/pytorch.html#transformer_engine.pytorch.DotProductAttention">DotProductAttention (class in transformer_engine.pytorch)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/common.html#transformer_engine.common.recipe.Format">Format (class in transformer_engine.common.recipe)</a>
+</li>
+      <li><a href="api/pytorch.html#transformer_engine.pytorch.DotProductAttention.forward">forward() (transformer_engine.pytorch.DotProductAttention method)</a>
+
+      <ul>
+        <li><a href="api/pytorch.html#transformer_engine.pytorch.LayerNormLinear.forward">(transformer_engine.pytorch.LayerNormLinear method)</a>
+</li>
+        <li><a href="api/pytorch.html#transformer_engine.pytorch.LayerNormMLP.forward">(transformer_engine.pytorch.LayerNormMLP method)</a>
+</li>
+        <li><a href="api/pytorch.html#transformer_engine.pytorch.Linear.forward">(transformer_engine.pytorch.Linear method)</a>
+</li>
+        <li><a href="api/pytorch.html#transformer_engine.pytorch.TransformerLayer.forward">(transformer_engine.pytorch.TransformerLayer method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/pytorch.html#transformer_engine.pytorch.fp8_autocast">fp8_autocast() (in module transformer_engine.pytorch)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/pytorch.html#transformer_engine.pytorch.LayerNorm">LayerNorm (class in transformer_engine.pytorch)</a>
+</li>
+      <li><a href="api/pytorch.html#transformer_engine.pytorch.LayerNormLinear">LayerNormLinear (class in transformer_engine.pytorch)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/pytorch.html#transformer_engine.pytorch.LayerNormMLP">LayerNormMLP (class in transformer_engine.pytorch)</a>
+</li>
+      <li><a href="api/pytorch.html#transformer_engine.pytorch.Linear">Linear (class in transformer_engine.pytorch)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/c/transpose.html#_CPPv419nvte_cast_transposeK10NVTETensor10NVTETensor10NVTETensor12cudaStream_t">nvte_cast_transpose (C++ function)</a>
+</li>
+      <li><a href="api/c/transpose.html#_CPPv425nvte_cast_transpose_dbiasK10NVTETensor10NVTETensor10NVTETensor10NVTETensor10NVTETensor12cudaStream_t">nvte_cast_transpose_dbias (C++ function)</a>
+</li>
+      <li><a href="api/c/transpose.html#_CPPv431nvte_cast_transpose_dbias_dgeluK10NVTETensorK10NVTETensor10NVTETensor10NVTETensor10NVTETensor10NVTETensor12cudaStream_t">nvte_cast_transpose_dbias_dgelu (C++ function)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv418nvte_create_tensorPvK9NVTEShapeK9NVTEDTypePfPfPf">nvte_create_tensor (C++ function)</a>
+</li>
+      <li><a href="api/c/gemm.html#_CPPv416nvte_cublas_gemmK10NVTETensorK10NVTETensor10NVTETensorK10NVTETensor10NVTETensorbbb10NVTETensorbb12cudaStream_t">nvte_cublas_gemm (C++ function)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv419nvte_destroy_tensor10NVTETensor">nvte_destroy_tensor (C++ function)</a>
+</li>
+      <li><a href="api/c/activation.html#_CPPv411nvte_dgegluK10NVTETensorK10NVTETensor10NVTETensor12cudaStream_t">nvte_dgeglu (C++ function)</a>
+</li>
+      <li><a href="api/c/transpose.html#_CPPv426nvte_dgeglu_cast_transposeK10NVTETensorK10NVTETensor10NVTETensor10NVTETensor12cudaStream_t">nvte_dgeglu_cast_transpose (C++ function)</a>
+</li>
+      <li><a href="api/c/cast.html#_CPPv419nvte_fp8_dequantizeK10NVTETensor10NVTETensor12cudaStream_t">nvte_fp8_dequantize (C++ function)</a>
+</li>
+      <li><a href="api/c/cast.html#_CPPv417nvte_fp8_quantizeK10NVTETensor10NVTETensor12cudaStream_t">nvte_fp8_quantize (C++ function)</a>
+</li>
+      <li><a href="api/c/activation.html#_CPPv410nvte_gegluK10NVTETensor10NVTETensor12cudaStream_t">nvte_geglu (C++ function)</a>
+</li>
+      <li><a href="api/c/activation.html#_CPPv49nvte_geluK10NVTETensor10NVTETensor12cudaStream_t">nvte_gelu (C++ function)</a>
+</li>
+      <li><a href="api/c/layer_norm.html#_CPPv420nvte_layernorm1p_bwdK10NVTETensorK10NVTETensorK10NVTETensorK10NVTETensorK10NVTETensor10NVTETensor10NVTETensor10NVTETensor10NVTETensor10NVTETensor12cudaStream_tKi10NVTETensor10NVTETensor">nvte_layernorm1p_bwd (C++ function)</a>
+</li>
+      <li><a href="api/c/layer_norm.html#_CPPv420nvte_layernorm1p_fwdK10NVTETensorK10NVTETensorK10NVTETensorKf10NVTETensor10NVTETensor10NVTETensor12cudaStream_tKi10NVTETensor10NVTETensor">nvte_layernorm1p_fwd (C++ function)</a>
+</li>
+      <li><a href="api/c/layer_norm.html#_CPPv418nvte_layernorm_bwdK10NVTETensorK10NVTETensorK10NVTETensorK10NVTETensorK10NVTETensor10NVTETensor10NVTETensor10NVTETensor10NVTETensor10NVTETensor12cudaStream_tKi10NVTETensor10NVTETensor">nvte_layernorm_bwd (C++ function)</a>
+</li>
+      <li><a href="api/c/layer_norm.html#_CPPv418nvte_layernorm_fwdK10NVTETensorK10NVTETensorK10NVTETensorKf10NVTETensor10NVTETensor10NVTETensor12cudaStream_tKi10NVTETensor10NVTETensor">nvte_layernorm_fwd (C++ function)</a>
+</li>
+      <li><a href="api/c/transpose.html#_CPPv425nvte_multi_cast_transpose6size_tPK10NVTETensorP10NVTETensorP10NVTETensor12cudaStream_t">nvte_multi_cast_transpose (C++ function)</a>
+</li>
+      <li><a href="api/c/softmax.html#_CPPv435nvte_scaled_masked_softmax_backwardK10NVTETensorK10NVTETensor10NVTETensorf12cudaStream_t">nvte_scaled_masked_softmax_backward (C++ function)</a>
+</li>
+      <li><a href="api/c/softmax.html#_CPPv434nvte_scaled_masked_softmax_forwardK10NVTETensorK10NVTETensor10NVTETensorf12cudaStream_t">nvte_scaled_masked_softmax_forward (C++ function)</a>
+</li>
+      <li><a href="api/c/softmax.html#_CPPv428nvte_scaled_softmax_backwardK10NVTETensorK10NVTETensor10NVTETensorf12cudaStream_t">nvte_scaled_softmax_backward (C++ function)</a>
+</li>
+      <li><a href="api/c/softmax.html#_CPPv427nvte_scaled_softmax_forwardK10NVTETensor10NVTETensorf12cudaStream_t">nvte_scaled_softmax_forward (C++ function)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/c/softmax.html#_CPPv448nvte_scaled_upper_triang_masked_softmax_backwardK10NVTETensorK10NVTETensor10NVTETensorf12cudaStream_t">nvte_scaled_upper_triang_masked_softmax_backward (C++ function)</a>
+</li>
+      <li><a href="api/c/softmax.html#_CPPv447nvte_scaled_upper_triang_masked_softmax_forwardK10NVTETensor10NVTETensorf12cudaStream_t">nvte_scaled_upper_triang_masked_softmax_forward (C++ function)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv416nvte_tensor_amaxK10NVTETensor">nvte_tensor_amax (C++ function)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv416nvte_tensor_dataK10NVTETensor">nvte_tensor_data (C++ function)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv417nvte_tensor_scaleK10NVTETensor">nvte_tensor_scale (C++ function)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv421nvte_tensor_scale_invK10NVTETensor">nvte_tensor_scale_inv (C++ function)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv417nvte_tensor_shapeK10NVTETensor">nvte_tensor_shape (C++ function)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv416nvte_tensor_typeK10NVTETensor">nvte_tensor_type (C++ function)</a>
+</li>
+      <li><a href="api/c/transpose.html#_CPPv414nvte_transposeK10NVTETensor10NVTETensor12cudaStream_t">nvte_transpose (C++ function)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv49NVTEDType">NVTEDType (C++ enum)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N9NVTEDType13kNVTEBFloat16E">NVTEDType::kNVTEBFloat16 (C++ enumerator)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N9NVTEDType9kNVTEByteE">NVTEDType::kNVTEByte (C++ enumerator)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N9NVTEDType12kNVTEFloat16E">NVTEDType::kNVTEFloat16 (C++ enumerator)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N9NVTEDType12kNVTEFloat32E">NVTEDType::kNVTEFloat32 (C++ enumerator)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N9NVTEDType15kNVTEFloat8E4M3E">NVTEDType::kNVTEFloat8E4M3 (C++ enumerator)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N9NVTEDType15kNVTEFloat8E5M2E">NVTEDType::kNVTEFloat8E5M2 (C++ enumerator)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N9NVTEDType10kNVTEInt32E">NVTEDType::kNVTEInt32 (C++ enumerator)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N9NVTEDType13kNVTENumTypesE">NVTEDType::kNVTENumTypes (C++ enumerator)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv49NVTEShape">NVTEShape (C++ struct)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N9NVTEShape4dataE">NVTEShape::data (C++ member)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N9NVTEShape4ndimE">NVTEShape::ndim (C++ member)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv410NVTETensor">NVTETensor (C++ type)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/c/transformer_engine.html#_CPPv418transformer_engine">transformer_engine (C++ type)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine5DTypeE">transformer_engine::DType (C++ enum)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine5DType9kBFloat16E">transformer_engine::DType::kBFloat16 (C++ enumerator)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine5DType5kByteE">transformer_engine::DType::kByte (C++ enumerator)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine5DType8kFloat16E">transformer_engine::DType::kFloat16 (C++ enumerator)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine5DType8kFloat32E">transformer_engine::DType::kFloat32 (C++ enumerator)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine5DType11kFloat8E4M3E">transformer_engine::DType::kFloat8E4M3 (C++ enumerator)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine5DType11kFloat8E5M2E">transformer_engine::DType::kFloat8E5M2 (C++ enumerator)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine5DType6kInt32E">transformer_engine::DType::kInt32 (C++ enumerator)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine5DType9kNumTypesE">transformer_engine::DType::kNumTypes (C++ enumerator)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine13TensorWrapperE">transformer_engine::TensorWrapper (C++ struct)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/c/transformer_engine.html#_CPPv4NK18transformer_engine13TensorWrapper4amaxEv">transformer_engine::TensorWrapper::amax (C++ function)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4NK18transformer_engine13TensorWrapper4dataEv">transformer_engine::TensorWrapper::data (C++ function)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4NK18transformer_engine13TensorWrapper4dptrEv">transformer_engine::TensorWrapper::dptr (C++ function)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4NK18transformer_engine13TensorWrapper5dtypeEv">transformer_engine::TensorWrapper::dtype (C++ function)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine13TensorWrapperaSERK13TensorWrapper">transformer_engine::TensorWrapper::operator= (C++ function)</a>, <a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine13TensorWrapperaSERR13TensorWrapper">[1]</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4NK18transformer_engine13TensorWrapper5scaleEv">transformer_engine::TensorWrapper::scale (C++ function)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4NK18transformer_engine13TensorWrapper9scale_invEv">transformer_engine::TensorWrapper::scale_inv (C++ function)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4NK18transformer_engine13TensorWrapper5shapeEv">transformer_engine::TensorWrapper::shape (C++ function)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine13TensorWrapper7tensor_E">transformer_engine::TensorWrapper::tensor_ (C++ member)</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine13TensorWrapper13TensorWrapperEPvRK9NVTEShapeK5DTypePfPfPf">transformer_engine::TensorWrapper::TensorWrapper (C++ function)</a>, <a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine13TensorWrapper13TensorWrapperEPvRKNSt6vectorI6size_tEEK5DTypePfPfPf">[1]</a>, <a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine13TensorWrapper13TensorWrapperERK13TensorWrapper">[2]</a>, <a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine13TensorWrapper13TensorWrapperERR13TensorWrapper">[3]</a>, <a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine13TensorWrapper13TensorWrapperEv">[4]</a>
+</li>
+      <li><a href="api/c/transformer_engine.html#_CPPv4N18transformer_engine13TensorWrapperD0Ev">transformer_engine::TensorWrapper::~TensorWrapper (C++ function)</a>
+</li>
+      <li><a href="api/pytorch.html#transformer_engine.pytorch.TransformerLayer">TransformerLayer (class in transformer_engine.pytorch)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+  <style>
+  a:link, a:visited {
+    color: #76b900;
+  }
+
+  a:hover {
+    color: #8c0;
+  }
+
+  html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple)>dt {
+    background: rgba(118, 185, 0, 0.1);
+    color: rgba(59,93,0,1);
+    border-top: solid 3px rgba(59,93,0,1);
+  }
+
+  html.writer-html4 .rst-content dl:not(.docutils) .property, html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple) .property {
+    text-transform: capitalize;
+    display: inline-block;
+    padding-right: 8px;
+  }
+  </style>
+
+  
+
+</body>
+</html>

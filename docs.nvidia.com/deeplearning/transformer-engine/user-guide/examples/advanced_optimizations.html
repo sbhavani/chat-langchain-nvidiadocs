@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Performance Optimizations &mdash; Transformer Engine 0.6.0
+ documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="C/C++ API" href="../api/c/index.html" />
+    <link rel="prev" title="Using FP8 with Transformer Engine" href="fp8_primer.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" > 
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Transformer Engine
+          </a>
+              <div class="version">
+                0.6.0
+-f18e677<br/>
+Version select: <select onChange="window.location.href = this.value" onFocus="this.selectedIndex = 0">
+    <option value="https://docs.nvidia.com/deeplearning/transformer-engine/user-guide/index.html" selected>Current release</option>
+    <option value="https://docs.nvidia.com/deeplearning/transformer-engine/archives/index.html">Older releases</option>
+</select>
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+  <style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search, .wy-nav-top {
+      background: #76b900;
+    }
+
+    .wy-menu > p > span.caption-text {
+      color: #76b900;
+    }
+
+    .wy-menu-vertical p {
+      height: 32px;
+      line-height: 32px;
+      padding: 0 1.618em;
+      margin: 12px 0 0;
+      display: block;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 85%;
+      white-space: nowrap;
+    }
+
+    .wy-side-nav-search a:link, .wy-nav-top a:link {
+      color: #fff;
+    }
+    .wy-side-nav-search a:visited, .wy-nav-top a:visited {
+      color: #fff;
+    }
+    .wy-side-nav-search a:hover, .wy-nav-top a:hover {
+      color: #fff;
+    }
+
+    .wy-menu-vertical a:link, .wy-menu-vertical a:visited {
+      color: #d9d9d9
+    }
+
+    .wy-menu-vertical a:active {
+      background-color: #76b900
+    }
+
+    .wy-side-nav-search>div.version {
+      color: rgba(0, 0, 0, 0.3)
+    }
+
+    .wy-nav-content {
+      max-width: 1000px;
+    }
+
+    /* override table width restrictions */
+    .wy-table-responsive table td, .wy-table-responsive table th {
+        /* !important prevents the common CSS stylesheets from
+          overriding this as on RTD they are loaded after this stylesheet */
+        white-space: normal !important;
+    }
+
+    .wy-table-responsive {
+        overflow: visible !important;
+    }
+
+  </style>
+  
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#transformer-engine-in-ngc-containers">Transformer Engine in NGC Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#pip-from-github">pip - from GitHub</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#additional-prerequisites">Additional Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#installation-stable-release">Installation (stable release)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#installation-development-build">Installation (development build)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#Overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#Let’s-build-a-Transformer-layer!">Let’s build a Transformer layer!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#Meet-Transformer-Engine">Meet Transformer Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#Fused-TE-Modules">Fused TE Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#Enabling-FP8">Enabling FP8</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python API documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/common.html">Common API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/common.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/common.html#transformer_engine.common.recipe.Format"><code class="docutils literal notranslate"><span class="pre">Format</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/common.html#transformer_engine.common.recipe.DelayedScaling"><code class="docutils literal notranslate"><span class="pre">DelayedScaling</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/framework.html">Framework-specific API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/pytorch.html">pyTorch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/pytorch.html#modules">Modules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.Linear"><code class="docutils literal notranslate"><span class="pre">Linear</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.LayerNorm"><code class="docutils literal notranslate"><span class="pre">LayerNorm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.LayerNormLinear"><code class="docutils literal notranslate"><span class="pre">LayerNormLinear</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.LayerNormMLP"><code class="docutils literal notranslate"><span class="pre">LayerNormMLP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.DotProductAttention"><code class="docutils literal notranslate"><span class="pre">DotProductAttention</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.TransformerLayer"><code class="docutils literal notranslate"><span class="pre">TransformerLayer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api/pytorch.html#functions">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.fp8_autocast"><code class="docutils literal notranslate"><span class="pre">fp8_autocast()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.checkpoint"><code class="docutils literal notranslate"><span class="pre">checkpoint()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples and Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="fp8_primer.html">Using FP8 with Transformer Engine</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fp8_primer.html#Introduction-to-FP8">Introduction to FP8</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="fp8_primer.html#Structure">Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fp8_primer.html#Mixed-precision-training---a-quick-introduction">Mixed precision training - a quick introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fp8_primer.html#Mixed-precision-training-with-FP8">Mixed precision training with FP8</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="fp8_primer.html#id1">Using FP8 with Transformer Engine</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="fp8_primer.html#FP8-recipe">FP8 recipe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fp8_primer.html#FP8-autocasting">FP8 autocasting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fp8_primer.html#Handling-backward-pass">Handling backward pass</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fp8_primer.html#Precision">Precision</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Performance Optimizations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Multi-GPU-training">Multi-GPU training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Gradient-accumulation-fusion">Gradient accumulation fusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#FP8-weight-caching">FP8 weight caching</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/c/index.html">C/C++ API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/c/activation.html">activation.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/c/cast.html">cast.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/c/gemm.html">gemm.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/c/layer_norm.html">layer_norm.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/c/softmax.html">softmax.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/c/transformer_engine.html">transformer_engine.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/c/transpose.html">transpose.h</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Transformer Engine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Performance Optimizations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/examples/advanced_optimizations.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars and line breaks on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+    white-space: pre;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+.jp-RenderedHTMLCommon thead,
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+.jp-RenderedHTMLCommon th,
+div.rendered_html th {
+  font-weight: bold;
+}
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.jp-RenderedHTMLCommon tbody tr:hover,
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="Performance-Optimizations">
+<h1>Performance Optimizations<a class="headerlink" href="#Performance-Optimizations" title="Permalink to this heading">¶</a></h1>
+<p>This guide is a follow-up to the discussion in the <a class="reference internal" href="quickstart.html"><span class="doc">quickstart guide</span></a>. We will focus on techniques to achieve maximum performance when training a basic GPT encoder layer. For convenience, we use some helper functions defined in <a class="reference external" href="quickstart_utils.py">quickstart_utils.py</a>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">transformer_engine.pytorch</span> <span class="k">as</span> <span class="nn">te</span>
+<span class="kn">from</span> <span class="nn">transformer_engine.common.recipe</span> <span class="kn">import</span> <span class="n">Format</span><span class="p">,</span> <span class="n">DelayedScaling</span>
+<span class="kn">import</span> <span class="nn">quickstart_utils</span> <span class="k">as</span> <span class="nn">utils</span>
+
+<span class="c1"># Layer configuration</span>
+<span class="n">hidden_size</span> <span class="o">=</span> <span class="mi">4096</span>
+<span class="n">sequence_length</span> <span class="o">=</span> <span class="mi">2048</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">ffn_hidden_size</span> <span class="o">=</span> <span class="mi">16384</span>
+<span class="n">num_attention_heads</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">dtype</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">float16</span>
+
+<span class="c1"># Synthetic data</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">sequence_length</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+<span class="n">dy</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">sequence_length</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Construct layer</span>
+<span class="n">basic_transformer</span> <span class="o">=</span> <span class="n">te</span><span class="o">.</span><span class="n">TransformerLayer</span><span class="p">(</span>
+    <span class="n">hidden_size</span><span class="p">,</span>
+    <span class="n">ffn_hidden_size</span><span class="p">,</span>
+    <span class="n">num_attention_heads</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">basic_transformer</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+<span class="n">fp8_format</span> <span class="o">=</span> <span class="n">Format</span><span class="o">.</span><span class="n">HYBRID</span>
+<span class="n">fp8_recipe</span> <span class="o">=</span> <span class="n">DelayedScaling</span><span class="p">(</span>
+    <span class="n">fp8_format</span><span class="o">=</span><span class="n">fp8_format</span><span class="p">,</span>
+    <span class="n">amax_history_len</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">amax_compute_algo</span><span class="o">=</span><span class="s2">&quot;max&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="c1"># Training step</span>
+<span class="k">with</span> <span class="n">te</span><span class="o">.</span><span class="n">fp8_autocast</span><span class="p">(</span><span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fp8_recipe</span><span class="o">=</span><span class="n">fp8_recipe</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">basic_transformer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">attention_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">y</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">dy</span><span class="p">)</span>
+
+<span class="c1"># Measure step time</span>
+<span class="n">utils</span><span class="o">.</span><span class="n">speedometer</span><span class="p">(</span>
+    <span class="n">basic_transformer</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">dy</span><span class="p">,</span>
+    <span class="n">forward_kwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;attention_mask&quot;</span><span class="p">:</span> <span class="kc">None</span> <span class="p">},</span>
+    <span class="n">fp8_autocast_kwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;fp8_recipe&quot;</span><span class="p">:</span> <span class="n">fp8_recipe</span> <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Mean time: 27.82952880859375 ms
+</pre></div></div>
+</div>
+<section id="Multi-GPU-training">
+<h2>Multi-GPU training<a class="headerlink" href="#Multi-GPU-training" title="Permalink to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Summary</p>
+<p>We parallelize a Transformer layer with data, tensor, and sequence parallelism.</p>
+</div>
+<p>A variety of parallelism strategies can be used to enable multi-GPU training of Transformer models, often based on different approaches to distribute their <span class="math notranslate nohighlight">\(\text{sequence_length} \times \text{batch_size} \times \text{hidden_size}\)</span> activation tensors. The most common approach is data parallelism, which distributes along the <span class="math notranslate nohighlight">\(\text{batch_size}\)</span> dimension. By storing duplicate copies of the model on each GPU, the forward and backward passes of the training step can be done
+independently, followed by a gradient synchronization. A more advanced strategy is tensor parallelism, a type of model parallelism that distributes along the <span class="math notranslate nohighlight">\(\text{hidden_size}\)</span> dimension. This allows us to scale past the limits of data parallelism (typically <span class="math notranslate nohighlight">\(\text{hidden_size} &gt; \text{batch_size}\)</span>) and to reduce the per-GPU memory usage (since model parameters are also distributed), but it also incurs the overhead of communicating activation tensors between GPUs at every step. For
+a more detailed explanation, please see the <a class="reference external" href="https://arxiv.org/pdf/1909.08053.pdf">Megatron-LM paper</a>. Finally, sequence parallelism distributes along the <span class="math notranslate nohighlight">\(\text{sequence_length}\)</span> dimension. This can be used when tensor parallelism is enabled in order to parallelize operations that run outside the tensor-parallel region (e.g. layer norm). For more details, please see <a class="reference external" href="https://arxiv.org/pdf/2205.05198.pdf">this paper</a>.</p>
+<p>To show this in action, let’s first initialize NCCL with a trivial process group:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Configure parallel groups</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="n">world_group</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">init_process_group</span><span class="p">(</span>
+    <span class="s2">&quot;nccl&quot;</span><span class="p">,</span>
+    <span class="n">init_method</span><span class="o">=</span><span class="s2">&quot;file:///tmp/rdzv&quot;</span><span class="p">,</span>
+    <span class="n">world_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">rank</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">data_parallel_group</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">new_group</span><span class="p">(</span><span class="n">ranks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;nccl&quot;</span><span class="p">)</span>
+<span class="n">tensor_parallel_group</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">new_group</span><span class="p">(</span><span class="n">ranks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;nccl&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We only initialize with one GPU to keep this example simple. Please consult the documentation <a class="reference external" href="https://pytorch.org/docs/stable/distributed.html">torch.distributed</a> for guidance on running with multiple GPUs. Note that we require that each distributed process corresponds to exactly one GPU, so we treat them interchangeably. In practice, there are multiple factors that can affect the optimal parallel layout: the system hardware, the network topology, usage of other parallelism schemes like
+pipeline parallelism. A rough rule-of-thumb is to interpret the GPUs as a 2D grid with dimensions of <span class="math notranslate nohighlight">\(\text{num_nodes} \times \text{gpus_per_node}\)</span>. The rows are tensor-parallel groups and the columns are data-parallel groups.</p>
+<p>Enabling data parallelism with Transformer Engine is similar to enabling data parallelism with standard PyTorch models: simply wrap the modules with <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.parallel.DistributedDataParallel.html">torch.nn.parallel.DistributedDataParallel</a>. FP8 training requires extra synchronization for the scaling factors, so the data-parallel process group must also be passed to the <a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.fp8_autocast"><span class="std std-ref">fp8_autocast</span></a>
+context manager. Transformer Engine modules also have native support for tensor and sequence parallelism. If the user provides a process group for tensor parallelism, the modules will distribute the data and perform communication internally. If sequence parallelism is enabled, it will be applied for operations that are not amenable to tensor parallelism and it will use the tensor-parallel process group.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Construct layer</span>
+<span class="n">parallel_transformer</span> <span class="o">=</span> <span class="n">te</span><span class="o">.</span><span class="n">TransformerLayer</span><span class="p">(</span>
+    <span class="n">hidden_size</span><span class="p">,</span>
+    <span class="n">ffn_hidden_size</span><span class="p">,</span>
+    <span class="n">num_attention_heads</span><span class="p">,</span>
+    <span class="n">set_parallel_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">tp_group</span><span class="o">=</span><span class="n">tensor_parallel_group</span><span class="p">,</span>
+    <span class="n">sequence_parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">parallel_transformer</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+<span class="n">parallel_transformer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">parallel</span><span class="o">.</span><span class="n">DistributedDataParallel</span><span class="p">(</span>
+    <span class="n">parallel_transformer</span><span class="p">,</span>
+    <span class="n">process_group</span><span class="o">=</span><span class="n">data_parallel_group</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Training step</span>
+<span class="k">with</span> <span class="n">te</span><span class="o">.</span><span class="n">fp8_autocast</span><span class="p">(</span><span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fp8_recipe</span><span class="o">=</span><span class="n">fp8_recipe</span><span class="p">,</span> <span class="n">fp8_group</span><span class="o">=</span><span class="n">data_parallel_group</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">parallel_transformer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">attention_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">y</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">dy</span><span class="p">)</span>
+
+<span class="c1"># Measure step time</span>
+<span class="n">utils</span><span class="o">.</span><span class="n">speedometer</span><span class="p">(</span>
+    <span class="n">parallel_transformer</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">dy</span><span class="p">,</span>
+    <span class="n">forward_kwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;attention_mask&quot;</span><span class="p">:</span> <span class="kc">None</span> <span class="p">},</span>
+    <span class="n">fp8_autocast_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;fp8_recipe&quot;</span><span class="p">:</span> <span class="n">fp8_recipe</span><span class="p">,</span>
+        <span class="s2">&quot;fp8_group&quot;</span><span class="p">:</span> <span class="n">data_parallel_group</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Mean time: 29.09606689453125 ms
+</pre></div></div>
+</div>
+</section>
+<section id="Gradient-accumulation-fusion">
+<h2>Gradient accumulation fusion<a class="headerlink" href="#Gradient-accumulation-fusion" title="Permalink to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Summary</p>
+<p>We take advantage of the ability of Tensor Cores to accumulate outputs directly into FP32.</p>
+</div>
+<p>PyTorch’s autograd functionality assumes that a model parameter and its corresponding gradient have the same data type. However, while low-precision data types like FP8 are sufficient for evaluating a neural network’s forward and backward passes, the optimization step typically requires full FP32 precision to avoid signficant learning degradation. In addition, Tensor Cores on Hopper GPUs have the option to accumulate matrix products directly into FP32, resulting in better numerical accuracy and
+avoiding the need for a separate casting kernel. Thus, Transformer Engine provides an option to directly generate FP32 gradients for weight tensors. The FP32 gradients are not output to the parameter’s <code class="docutils literal notranslate"><span class="pre">grad</span></code> tensor, but rather to a <code class="docutils literal notranslate"><span class="pre">main_grad</span></code> tensor that must be initialized before the backward pass.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Construct layer</span>
+<span class="n">wgrad_transformer</span> <span class="o">=</span> <span class="n">te</span><span class="o">.</span><span class="n">TransformerLayer</span><span class="p">(</span>
+    <span class="n">hidden_size</span><span class="p">,</span>
+    <span class="n">ffn_hidden_size</span><span class="p">,</span>
+    <span class="n">num_attention_heads</span><span class="p">,</span>
+    <span class="n">fuse_wgrad_accumulation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">fuse_qkv_params</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># Required for fuse_wgrad_accumulation</span>
+<span class="p">)</span>
+<span class="n">wgrad_transformer</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">wgrad_transformer</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+    <span class="n">param</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">param</span><span class="o">.</span><span class="n">main_grad</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c1"># Training step</span>
+<span class="k">with</span> <span class="n">te</span><span class="o">.</span><span class="n">fp8_autocast</span><span class="p">(</span><span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fp8_recipe</span><span class="o">=</span><span class="n">fp8_recipe</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">wgrad_transformer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">attention_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">y</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">dy</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">wgrad_transformer</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">grad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">param</span><span class="o">.</span><span class="n">main_grad</span><span class="o">.</span><span class="n">copy_</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>
+        <span class="n">param</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Measure step time</span>
+<span class="n">utils</span><span class="o">.</span><span class="n">speedometer</span><span class="p">(</span>
+    <span class="n">wgrad_transformer</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">dy</span><span class="p">,</span>
+    <span class="n">forward_kwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;attention_mask&quot;</span><span class="p">:</span> <span class="kc">None</span> <span class="p">},</span>
+    <span class="n">fp8_autocast_kwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;fp8_recipe&quot;</span><span class="p">:</span> <span class="n">fp8_recipe</span> <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Mean time: 27.510029296875 ms
+</pre></div></div>
+</div>
+</section>
+<section id="FP8-weight-caching">
+<h2>FP8 weight caching<a class="headerlink" href="#FP8-weight-caching" title="Permalink to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Summary</p>
+<p>We avoid redundant FP8 casting when training with multiple gradient accumulation steps.</p>
+</div>
+<p>Since weights are typically trained in FP32, a type conversion is required before we can perform compute in FP8. By default, the <a class="reference internal" href="../api/pytorch.html#transformer_engine.pytorch.fp8_autocast"><span class="std std-ref">fp8_autocast</span></a> context manager will handle this internally by casting non-FP8 tensors to FP8 as they are encountered. However, we can improve upon this in some cases. In particular, if our training iteration is split into multiple gradient accumulation steps, each micro-batch will encounter the same weight
+tensors. Thus, we only need to cast the weights to FP8 in the first gradient accumulation step and we can cache the resulting FP8 weights for the remaining gradient accumulation steps.</p>
+<div class="admonition warning">
+<p class="admonition-title fa fa-exclamation-circle">Warning!</p>
+<p>The precise numerical outputs with and without the FP8 weight caching optimization may not be bitwise identical. This is because while the weights remain frozen across a gradient accumulation cycle, the scaling factors and amaxes for the FP8 weights can change as they are updated at the end of every iteration. These changes in amax tensors are incorporated into the amax history, which is not frozen.</p>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Construct layer</span>
+<span class="n">weight_caching_transformer</span> <span class="o">=</span> <span class="n">te</span><span class="o">.</span><span class="n">TransformerLayer</span><span class="p">(</span>
+    <span class="n">hidden_size</span><span class="p">,</span>
+    <span class="n">ffn_hidden_size</span><span class="p">,</span>
+    <span class="n">num_attention_heads</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">weight_caching_transformer</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+<span class="c1"># Cast weights in first gradient accumulation step</span>
+<span class="k">with</span> <span class="n">te</span><span class="o">.</span><span class="n">fp8_autocast</span><span class="p">(</span><span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fp8_recipe</span><span class="o">=</span><span class="n">fp8_recipe</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">weight_caching_transformer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">attention_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_first_microbatch</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">dy</span><span class="p">)</span>
+
+<span class="c1"># Reuse FP8 weights in subsequent gradient accumulation steps</span>
+<span class="k">with</span> <span class="n">te</span><span class="o">.</span><span class="n">fp8_autocast</span><span class="p">(</span><span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fp8_recipe</span><span class="o">=</span><span class="n">fp8_recipe</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">weight_caching_transformer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">attention_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_first_microbatch</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">y</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">dy</span><span class="p">)</span>
+
+<span class="c1"># Measure step time</span>
+<span class="n">utils</span><span class="o">.</span><span class="n">speedometer</span><span class="p">(</span>
+    <span class="n">weight_caching_transformer</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">dy</span><span class="p">,</span>
+    <span class="n">forward_kwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;attention_mask&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;is_first_microbatch&quot;</span><span class="p">:</span> <span class="kc">False</span> <span class="p">},</span>
+    <span class="n">fp8_autocast_kwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;fp8_recipe&quot;</span><span class="p">:</span> <span class="n">fp8_recipe</span> <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Mean time: 27.262666015625 ms
+</pre></div></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="fp8_primer.html" class="btn btn-neutral float-left" title="Using FP8 with Transformer Engine" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api/c/index.html" class="btn btn-neutral float-right" title="C/C++ API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+  <style>
+  a:link, a:visited {
+    color: #76b900;
+  }
+
+  a:hover {
+    color: #8c0;
+  }
+
+  html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple)>dt {
+    background: rgba(118, 185, 0, 0.1);
+    color: rgba(59,93,0,1);
+    border-top: solid 3px rgba(59,93,0,1);
+  }
+
+  html.writer-html4 .rst-content dl:not(.docutils) .property, html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple) .property {
+    text-transform: capitalize;
+    display: inline-block;
+    padding-right: 8px;
+  }
+  </style>
+
+  
+
+</body>
+</html>

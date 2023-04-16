@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>transformer_engine.h &mdash; Transformer Engine 0.6.0
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="transpose.h" href="transpose.html" />
+    <link rel="prev" title="softmax.h" href="softmax.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" > 
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Transformer Engine
+          </a>
+              <div class="version">
+                0.6.0
+-f18e677<br/>
+Version select: <select onChange="window.location.href = this.value" onFocus="this.selectedIndex = 0">
+    <option value="https://docs.nvidia.com/deeplearning/transformer-engine/user-guide/index.html" selected>Current release</option>
+    <option value="https://docs.nvidia.com/deeplearning/transformer-engine/archives/index.html">Older releases</option>
+</select>
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+  <style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search, .wy-nav-top {
+      background: #76b900;
+    }
+
+    .wy-menu > p > span.caption-text {
+      color: #76b900;
+    }
+
+    .wy-menu-vertical p {
+      height: 32px;
+      line-height: 32px;
+      padding: 0 1.618em;
+      margin: 12px 0 0;
+      display: block;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 85%;
+      white-space: nowrap;
+    }
+
+    .wy-side-nav-search a:link, .wy-nav-top a:link {
+      color: #fff;
+    }
+    .wy-side-nav-search a:visited, .wy-nav-top a:visited {
+      color: #fff;
+    }
+    .wy-side-nav-search a:hover, .wy-nav-top a:hover {
+      color: #fff;
+    }
+
+    .wy-menu-vertical a:link, .wy-menu-vertical a:visited {
+      color: #d9d9d9
+    }
+
+    .wy-menu-vertical a:active {
+      background-color: #76b900
+    }
+
+    .wy-side-nav-search>div.version {
+      color: rgba(0, 0, 0, 0.3)
+    }
+
+    .wy-nav-content {
+      max-width: 1000px;
+    }
+
+    /* override table width restrictions */
+    .wy-table-responsive table td, .wy-table-responsive table th {
+        /* !important prevents the common CSS stylesheets from
+          overriding this as on RTD they are loaded after this stylesheet */
+        white-space: normal !important;
+    }
+
+    .wy-table-responsive {
+        overflow: visible !important;
+    }
+
+  </style>
+  
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#transformer-engine-in-ngc-containers">Transformer Engine in NGC Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#pip-from-github">pip - from GitHub</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../installation.html#additional-prerequisites">Additional Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../installation.html#installation-stable-release">Installation (stable release)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../installation.html#installation-development-build">Installation (development build)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/quickstart.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/quickstart.html#Overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/quickstart.html#Let’s-build-a-Transformer-layer!">Let’s build a Transformer layer!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/quickstart.html#Meet-Transformer-Engine">Meet Transformer Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/quickstart.html#Fused-TE-Modules">Fused TE Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/quickstart.html#Enabling-FP8">Enabling FP8</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python API documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../common.html">Common API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../common.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../common.html#transformer_engine.common.recipe.Format"><code class="docutils literal notranslate"><span class="pre">Format</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../common.html#transformer_engine.common.recipe.DelayedScaling"><code class="docutils literal notranslate"><span class="pre">DelayedScaling</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../framework.html">Framework-specific API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pytorch.html">pyTorch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../pytorch.html#modules">Modules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../pytorch.html#transformer_engine.pytorch.Linear"><code class="docutils literal notranslate"><span class="pre">Linear</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pytorch.html#transformer_engine.pytorch.LayerNorm"><code class="docutils literal notranslate"><span class="pre">LayerNorm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pytorch.html#transformer_engine.pytorch.LayerNormLinear"><code class="docutils literal notranslate"><span class="pre">LayerNormLinear</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pytorch.html#transformer_engine.pytorch.LayerNormMLP"><code class="docutils literal notranslate"><span class="pre">LayerNormMLP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pytorch.html#transformer_engine.pytorch.DotProductAttention"><code class="docutils literal notranslate"><span class="pre">DotProductAttention</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pytorch.html#transformer_engine.pytorch.TransformerLayer"><code class="docutils literal notranslate"><span class="pre">TransformerLayer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../pytorch.html#functions">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../pytorch.html#transformer_engine.pytorch.fp8_autocast"><code class="docutils literal notranslate"><span class="pre">fp8_autocast()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pytorch.html#transformer_engine.pytorch.checkpoint"><code class="docutils literal notranslate"><span class="pre">checkpoint()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples and Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/fp8_primer.html">Using FP8 with Transformer Engine</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/fp8_primer.html#Introduction-to-FP8">Introduction to FP8</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../examples/fp8_primer.html#Structure">Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples/fp8_primer.html#Mixed-precision-training---a-quick-introduction">Mixed precision training - a quick introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples/fp8_primer.html#Mixed-precision-training-with-FP8">Mixed precision training with FP8</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/fp8_primer.html#id1">Using FP8 with Transformer Engine</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../examples/fp8_primer.html#FP8-recipe">FP8 recipe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples/fp8_primer.html#FP8-autocasting">FP8 autocasting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples/fp8_primer.html#Handling-backward-pass">Handling backward pass</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples/fp8_primer.html#Precision">Precision</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/advanced_optimizations.html">Performance Optimizations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/advanced_optimizations.html#Multi-GPU-training">Multi-GPU training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/advanced_optimizations.html#Gradient-accumulation-fusion">Gradient accumulation fusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/advanced_optimizations.html#FP8-weight-caching">FP8 weight caching</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">C/C++ API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="activation.html">activation.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cast.html">cast.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gemm.html">gemm.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layer_norm.html">layer_norm.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="softmax.html">softmax.h</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">transformer_engine.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transpose.html">transpose.h</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Transformer Engine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">C/C++ API</a></li>
+      <li class="breadcrumb-item active">transformer_engine.h</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/c/transformer_engine.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="transformer-engine-h">
+<h1>transformer_engine.h<a class="headerlink" href="#transformer-engine-h" title="Permalink to this heading">¶</a></h1>
+<p>Base classes and functions of Transformer Engine API. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv410NVTETensor">
+<span class="target" id="transformer__engine_8h_1afeeef6decf5fcf309f0f953aeb80430d"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">NVTETensor</span></span></span><a class="headerlink" href="#_CPPv410NVTETensor" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>TE Tensor type. </p>
+<p>NVTETensor is a contiguous tensor type storing a pointer to data of a given shape and type. It does not own the memory it points to. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv49NVTEDType">
+<span class="target" id="transformer__engine_8h_1a0a98075709a5bcdc90123b0cd63bd7cc"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVTEDType</span></span></span><a class="headerlink" href="#_CPPv49NVTEDType" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>TE datatype. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9NVTEDType9kNVTEByteE">
+<span class="target" id="transformer__engine_8h_1a0a98075709a5bcdc90123b0cd63bd7cca71586ee38d9f193afe18876303fd4ecd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kNVTEByte</span></span></span><a class="headerlink" href="#_CPPv4N9NVTEDType9kNVTEByteE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Byte </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9NVTEDType10kNVTEInt32E">
+<span class="target" id="transformer__engine_8h_1a0a98075709a5bcdc90123b0cd63bd7ccaae2f3d92d42ca3a045b624129d788011"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kNVTEInt32</span></span></span><a class="headerlink" href="#_CPPv4N9NVTEDType10kNVTEInt32E" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>32-bit integer </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9NVTEDType12kNVTEFloat32E">
+<span class="target" id="transformer__engine_8h_1a0a98075709a5bcdc90123b0cd63bd7cca5dd645fb4819c25b73f51fb52520aebb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kNVTEFloat32</span></span></span><a class="headerlink" href="#_CPPv4N9NVTEDType12kNVTEFloat32E" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>32-bit float </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9NVTEDType12kNVTEFloat16E">
+<span class="target" id="transformer__engine_8h_1a0a98075709a5bcdc90123b0cd63bd7cca67caac412c350bf13787fafabe7462ae"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kNVTEFloat16</span></span></span><a class="headerlink" href="#_CPPv4N9NVTEDType12kNVTEFloat16E" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>16-bit float (E5M10) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9NVTEDType13kNVTEBFloat16E">
+<span class="target" id="transformer__engine_8h_1a0a98075709a5bcdc90123b0cd63bd7cca03226c34f6dda85702e1378dc4d5c710"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kNVTEBFloat16</span></span></span><a class="headerlink" href="#_CPPv4N9NVTEDType13kNVTEBFloat16E" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>16-bit bfloat (E8M7) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9NVTEDType15kNVTEFloat8E4M3E">
+<span class="target" id="transformer__engine_8h_1a0a98075709a5bcdc90123b0cd63bd7ccaab4cda85c9b5fcd1c12a4349f81359cc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kNVTEFloat8E4M3</span></span></span><a class="headerlink" href="#_CPPv4N9NVTEDType15kNVTEFloat8E4M3E" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>8-bit float (E4M3) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9NVTEDType15kNVTEFloat8E5M2E">
+<span class="target" id="transformer__engine_8h_1a0a98075709a5bcdc90123b0cd63bd7cca6c1dba7793374d782868694bb795b320"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kNVTEFloat8E5M2</span></span></span><a class="headerlink" href="#_CPPv4N9NVTEDType15kNVTEFloat8E5M2E" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>8-bit float (E5M2) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9NVTEDType13kNVTENumTypesE">
+<span class="target" id="transformer__engine_8h_1a0a98075709a5bcdc90123b0cd63bd7cca4efb532dd5c33fce87ac9732ace7f70e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kNVTENumTypes</span></span></span><a class="headerlink" href="#_CPPv4N9NVTEDType13kNVTENumTypesE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Number of supported types </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418nvte_create_tensorPvK9NVTEShapeK9NVTEDTypePfPfPf">
+<span class="target" id="transformer__engine_8h_1ac131b1311b1aeb69c160d4ad6571f4a7"></span><a class="reference internal" href="#_CPPv410NVTETensor" title="NVTETensor"><span class="n"><span class="pre">NVTETensor</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nvte_create_tensor</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dptr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv49NVTEShape" title="NVTEShape"><span class="n"><span class="pre">NVTEShape</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">shape</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv49NVTEDType" title="NVTEDType"><span class="n"><span class="pre">NVTEDType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">dtype</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">amax_dptr</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">scale_dptr</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">scale_inv_dptr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418nvte_create_tensorPvK9NVTEShapeK9NVTEDTypePfPfPf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create a new TE tensor. </p>
+<p>Create a new TE tensor with a given shape, datatype and data. TE tensors are just wrappers on top of raw data and do not own memory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dptr</strong> – <strong>[in]</strong> Pointer to the tensor data. </p></li>
+<li><p><strong>shape</strong> – <strong>[in]</strong> Shape of the tensor. </p></li>
+<li><p><strong>dtype</strong> – <strong>[in]</strong> Data type of the tensor. </p></li>
+<li><p><strong>amax_dptr</strong> – <strong>[in]</strong> Pointer to the AMAX value. </p></li>
+<li><p><strong>scale_dptr</strong> – <strong>[in]</strong> Pointer to the scale value. </p></li>
+<li><p><strong>scale_inv_dptr</strong> – <strong>[in]</strong> Pointer to the inverse of scale value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new TE tensor. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419nvte_destroy_tensor10NVTETensor">
+<span class="target" id="transformer__engine_8h_1a692c7edd6f3d1731bdacf43e6446fa52"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nvte_destroy_tensor</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410NVTETensor" title="NVTETensor"><span class="n"><span class="pre">NVTETensor</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">tensor</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419nvte_destroy_tensor10NVTETensor" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Destroy a TE tensor. </p>
+<p>Since the TE tensor does not own memory, the underlying data is not freed during this operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tensor</strong> – <strong>[in]</strong> Tensor to be destroyed. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416nvte_tensor_typeK10NVTETensor">
+<span class="target" id="transformer__engine_8h_1a38d5ff94f2cadde2b4350423242a4615"></span><a class="reference internal" href="#_CPPv49NVTEDType" title="NVTEDType"><span class="n"><span class="pre">NVTEDType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nvte_tensor_type</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv410NVTETensor" title="NVTETensor"><span class="n"><span class="pre">NVTETensor</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">tensor</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416nvte_tensor_typeK10NVTETensor" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a tensor’s data type. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tensor</strong> – <strong>[in]</strong> Tensor.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A data type of the input tensor. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417nvte_tensor_shapeK10NVTETensor">
+<span class="target" id="transformer__engine_8h_1a22ea5e1e427f3b10bf4b2794a58f60ac"></span><a class="reference internal" href="#_CPPv49NVTEShape" title="NVTEShape"><span class="n"><span class="pre">NVTEShape</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nvte_tensor_shape</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv410NVTETensor" title="NVTETensor"><span class="n"><span class="pre">NVTETensor</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">tensor</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417nvte_tensor_shapeK10NVTETensor" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a tensor’s data shape. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tensor</strong> – <strong>[in]</strong> Tensor.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A shape of the input tensor. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416nvte_tensor_dataK10NVTETensor">
+<span class="target" id="transformer__engine_8h_1ae605f8e16736e77d6581d1c2ab7ae4d8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">nvte_tensor_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv410NVTETensor" title="NVTETensor"><span class="n"><span class="pre">NVTETensor</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">tensor</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416nvte_tensor_dataK10NVTETensor" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a raw pointer to the tensor’s data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tensor</strong> – <strong>[in]</strong> Tensor.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A raw pointer to tensor’s data. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416nvte_tensor_amaxK10NVTETensor">
+<span class="target" id="transformer__engine_8h_1a789623b93d7bfaa41453c7fd3a5a8b71"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">nvte_tensor_amax</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv410NVTETensor" title="NVTETensor"><span class="n"><span class="pre">NVTETensor</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">tensor</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416nvte_tensor_amaxK10NVTETensor" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a pointer to the tensor’s amax data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tensor</strong> – <strong>[in]</strong> Tensor.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pointer to tensor’s amax data. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417nvte_tensor_scaleK10NVTETensor">
+<span class="target" id="transformer__engine_8h_1a5091041a1017c3d48993237cd00e18c9"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">nvte_tensor_scale</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv410NVTETensor" title="NVTETensor"><span class="n"><span class="pre">NVTETensor</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">tensor</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417nvte_tensor_scaleK10NVTETensor" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a pointer to the tensor’s scale data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tensor</strong> – <strong>[in]</strong> Tensor.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pointer to tensor’s scale data. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421nvte_tensor_scale_invK10NVTETensor">
+<span class="target" id="transformer__engine_8h_1a23e9e87796d600b4f8834273ac5c7b59"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">nvte_tensor_scale_inv</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv410NVTETensor" title="NVTETensor"><span class="n"><span class="pre">NVTETensor</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">tensor</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421nvte_tensor_scale_invK10NVTETensor" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a pointer to the tensor’s inverse of scale data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tensor</strong> – <strong>[in]</strong> Tensor.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pointer to tensor’s inverse of scale data. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv49NVTEShape">
+<span class="target" id="structNVTEShape"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVTEShape</span></span></span><a class="headerlink" href="#_CPPv49NVTEShape" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;transformer_engine.h&gt;</em></div>
+<p>Shape of the tensor. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9NVTEShape4dataE">
+<span class="target" id="structNVTEShape_1a20d678f7375e438ea327b4c0f2369991"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><a class="headerlink" href="#_CPPv4N9NVTEShape4dataE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Shape data, of size ndim. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9NVTEShape4ndimE">
+<span class="target" id="structNVTEShape_1a6a9f253cb9db36276be4829fe4615f1c"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ndim</span></span></span><a class="headerlink" href="#_CPPv4N9NVTEShape4ndimE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Number of dimensions. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv418transformer_engine">
+<span class="target" id="namespacetransformer__engine"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transformer_engine</span></span></span><a class="headerlink" href="#_CPPv418transformer_engine" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Namespace containing C++ API of Transformer Engine. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine5DTypeE">
+<span class="target" id="namespacetransformer__engine_1a516e5dd3feb91b37498b9f8e806bf6cb"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DType</span></span></span><a class="headerlink" href="#_CPPv4N18transformer_engine5DTypeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>TE datatype. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine5DType5kByteE">
+<span class="target" id="namespacetransformer__engine_1a516e5dd3feb91b37498b9f8e806bf6cba0e6a5f48386d5e64047e2d726ec952a4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kByte</span></span></span><a class="headerlink" href="#_CPPv4N18transformer_engine5DType5kByteE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine5DType6kInt32E">
+<span class="target" id="namespacetransformer__engine_1a516e5dd3feb91b37498b9f8e806bf6cba10c09f8bff3c372f21cd8a13e01ae941"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kInt32</span></span></span><a class="headerlink" href="#_CPPv4N18transformer_engine5DType6kInt32E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine5DType8kFloat32E">
+<span class="target" id="namespacetransformer__engine_1a516e5dd3feb91b37498b9f8e806bf6cba9a78d6a569d086b524c3caf8c2522f96"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kFloat32</span></span></span><a class="headerlink" href="#_CPPv4N18transformer_engine5DType8kFloat32E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine5DType8kFloat16E">
+<span class="target" id="namespacetransformer__engine_1a516e5dd3feb91b37498b9f8e806bf6cba907b19d7a9943987059cdc540f11e440"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kFloat16</span></span></span><a class="headerlink" href="#_CPPv4N18transformer_engine5DType8kFloat16E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine5DType9kBFloat16E">
+<span class="target" id="namespacetransformer__engine_1a516e5dd3feb91b37498b9f8e806bf6cba0a69f63e30ad0ef5e69950a60a514d9f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kBFloat16</span></span></span><a class="headerlink" href="#_CPPv4N18transformer_engine5DType9kBFloat16E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine5DType11kFloat8E4M3E">
+<span class="target" id="namespacetransformer__engine_1a516e5dd3feb91b37498b9f8e806bf6cba45ff22438d905716a2718853bb75699e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kFloat8E4M3</span></span></span><a class="headerlink" href="#_CPPv4N18transformer_engine5DType11kFloat8E4M3E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine5DType11kFloat8E5M2E">
+<span class="target" id="namespacetransformer__engine_1a516e5dd3feb91b37498b9f8e806bf6cba642fc846366510934a2ea6cc2f635835"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kFloat8E5M2</span></span></span><a class="headerlink" href="#_CPPv4N18transformer_engine5DType11kFloat8E5M2E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine5DType9kNumTypesE">
+<span class="target" id="namespacetransformer__engine_1a516e5dd3feb91b37498b9f8e806bf6cba28541a5b96138a94a09ea59fc723dc9b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kNumTypes</span></span></span><a class="headerlink" href="#_CPPv4N18transformer_engine5DType9kNumTypesE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine13TensorWrapperE">
+<span class="target" id="classtransformer__engine_1_1TensorWrapper"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TensorWrapper</span></span></span><a class="headerlink" href="#_CPPv4N18transformer_engine13TensorWrapperE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;transformer_engine.h&gt;</em></div>
+<p>C++ wrapper for the NVTETensor class. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine13TensorWrapper13TensorWrapperEPvRK9NVTEShapeK5DTypePfPfPf">
+<span class="target" id="classtransformer__engine_1_1TensorWrapper_1a7f74214bdef5643c1f8ad384f66ce2d6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TensorWrapper</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dptr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv49NVTEShape" title="NVTEShape"><span class="n"><span class="pre">NVTEShape</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">shape</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N18transformer_engine5DTypeE" title="transformer_engine::DType"><span class="n"><span class="pre">DType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">dtype</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">amax_dptr</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">scale_dptr</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">scale_inv_dptr</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N18transformer_engine13TensorWrapper13TensorWrapperEPvRK9NVTEShapeK5DTypePfPfPf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructs new <a class="reference internal" href="#classtransformer__engine_1_1TensorWrapper"><span class="std std-ref">TensorWrapper</span></a>. </p>
+<p>Create a new TE tensor with a given shape, datatype and data. TE tensors are just wrappers on top of raw data and do not own memory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dptr</strong> – <strong>[in]</strong> Pointer to the tensor data. </p></li>
+<li><p><strong>shape</strong> – <strong>[in]</strong> Shape of the tensor. </p></li>
+<li><p><strong>dtype</strong> – <strong>[in]</strong> Data type of the tensor. </p></li>
+<li><p><strong>amax_dptr</strong> – <strong>[in]</strong> Pointer to the AMAX value. </p></li>
+<li><p><strong>scale_dptr</strong> – <strong>[in]</strong> Pointer to the scale value. </p></li>
+<li><p><strong>scale_inv_dptr</strong> – <strong>[in]</strong> Pointer to the inverse of scale value. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine13TensorWrapper13TensorWrapperEPvRKNSt6vectorI6size_tEEK5DTypePfPfPf">
+<span class="target" id="classtransformer__engine_1_1TensorWrapper_1add14a3f0c082f6d3b02a5d1717ebc98b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TensorWrapper</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dptr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">size_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">shape</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N18transformer_engine5DTypeE" title="transformer_engine::DType"><span class="n"><span class="pre">DType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">dtype</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">amax_dptr</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">scale_dptr</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">scale_inv_dptr</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N18transformer_engine13TensorWrapper13TensorWrapperEPvRKNSt6vectorI6size_tEEK5DTypePfPfPf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructs new <a class="reference internal" href="#classtransformer__engine_1_1TensorWrapper"><span class="std std-ref">TensorWrapper</span></a>. </p>
+<p>Create a new TE tensor with a given shape, datatype and data. TE tensors are just wrappers on top of raw data and do not own memory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dptr</strong> – <strong>[in]</strong> Pointer to the tensor data. </p></li>
+<li><p><strong>shape</strong> – <strong>[in]</strong> Shape of the tensor. </p></li>
+<li><p><strong>dtype</strong> – <strong>[in]</strong> Data type of the tensor. </p></li>
+<li><p><strong>amax_dptr</strong> – <strong>[in]</strong> Pointer to the AMAX value. </p></li>
+<li><p><strong>scale_dptr</strong> – <strong>[in]</strong> Pointer to the scale value. </p></li>
+<li><p><strong>scale_inv_dptr</strong> – <strong>[in]</strong> Pointer to the inverse of scale value. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine13TensorWrapper13TensorWrapperEv">
+<span class="target" id="classtransformer__engine_1_1TensorWrapper_1a313b9ba7d95aa20dbd81cb38ef000fe9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TensorWrapper</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N18transformer_engine13TensorWrapper13TensorWrapperEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructs new empty <a class="reference internal" href="#classtransformer__engine_1_1TensorWrapper"><span class="std std-ref">TensorWrapper</span></a>. </p>
+<p>Create a new empty TE tensor which holds nothing. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine13TensorWrapperD0Ev">
+<span class="target" id="classtransformer__engine_1_1TensorWrapper_1a7b0b84b96fc12bee8e120f4af7314a90"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~TensorWrapper</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N18transformer_engine13TensorWrapperD0Ev" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#classtransformer__engine_1_1TensorWrapper"><span class="std std-ref">TensorWrapper</span></a> destructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine13TensorWrapperaSERK13TensorWrapper">
+<span class="target" id="classtransformer__engine_1_1TensorWrapper_1a9de0f8b6311833be405bacf3f78f2ed3"></span><a class="reference internal" href="#_CPPv4N18transformer_engine13TensorWrapperE" title="transformer_engine::TensorWrapper"><span class="n"><span class="pre">TensorWrapper</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N18transformer_engine13TensorWrapperE" title="transformer_engine::TensorWrapper"><span class="n"><span class="pre">TensorWrapper</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N18transformer_engine13TensorWrapperaSERK13TensorWrapper" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine13TensorWrapper13TensorWrapperERK13TensorWrapper">
+<span class="target" id="classtransformer__engine_1_1TensorWrapper_1a83e8e15408345a13654b9c520ca4f60e"></span><span class="sig-name descname"><span class="n"><span class="pre">TensorWrapper</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N18transformer_engine13TensorWrapper13TensorWrapperERK13TensorWrapper" title="transformer_engine::TensorWrapper::TensorWrapper"><span class="n"><span class="pre">TensorWrapper</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N18transformer_engine13TensorWrapper13TensorWrapperERK13TensorWrapper" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine13TensorWrapper13TensorWrapperERR13TensorWrapper">
+<span class="target" id="classtransformer__engine_1_1TensorWrapper_1a6547dab20f4790cced9d55ab7bd5117f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TensorWrapper</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N18transformer_engine13TensorWrapper13TensorWrapperERR13TensorWrapper" title="transformer_engine::TensorWrapper::TensorWrapper"><span class="n"><span class="pre">TensorWrapper</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N18transformer_engine13TensorWrapper13TensorWrapperERR13TensorWrapper" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructs new <a class="reference internal" href="#classtransformer__engine_1_1TensorWrapper"><span class="std std-ref">TensorWrapper</span></a> from existing <a class="reference internal" href="#classtransformer__engine_1_1TensorWrapper"><span class="std std-ref">TensorWrapper</span></a>. </p>
+<p>Pass an existing TE tensor to a new <a class="reference internal" href="#classtransformer__engine_1_1TensorWrapper"><span class="std std-ref">TensorWrapper</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – <strong>[inout]</strong> The source of the data. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine13TensorWrapperaSERR13TensorWrapper">
+<span class="target" id="classtransformer__engine_1_1TensorWrapper_1ab4c81767f19a4c5808c53913c5ae1068"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N18transformer_engine13TensorWrapperE" title="transformer_engine::TensorWrapper"><span class="n"><span class="pre">TensorWrapper</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N18transformer_engine13TensorWrapperE" title="transformer_engine::TensorWrapper"><span class="n"><span class="pre">TensorWrapper</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N18transformer_engine13TensorWrapperaSERR13TensorWrapper" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Assign the data from existing <a class="reference internal" href="#classtransformer__engine_1_1TensorWrapper"><span class="std std-ref">TensorWrapper</span></a>. </p>
+<p>Change ownership of an existing TE tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – <strong>[inout]</strong> The source of the data. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK18transformer_engine13TensorWrapper4dataEv">
+<span class="target" id="classtransformer__engine_1_1TensorWrapper_1a38b026508f0d08d6ebbb08dbf3fd77fb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv410NVTETensor" title="NVTETensor"><span class="n"><span class="pre">NVTETensor</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK18transformer_engine13TensorWrapper4dataEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get an underlying NVTETensor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>NVTETensor held by this <a class="reference internal" href="#classtransformer__engine_1_1TensorWrapper"><span class="std std-ref">TensorWrapper</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK18transformer_engine13TensorWrapper5shapeEv">
+<span class="target" id="classtransformer__engine_1_1TensorWrapper_1a1e64dda9fa72c07b27bdda887dca5b38"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv49NVTEShape" title="NVTEShape"><span class="n"><span class="pre">NVTEShape</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shape</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK18transformer_engine13TensorWrapper5shapeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the shape of this <a class="reference internal" href="#classtransformer__engine_1_1TensorWrapper"><span class="std std-ref">TensorWrapper</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Shape of this <a class="reference internal" href="#classtransformer__engine_1_1TensorWrapper"><span class="std std-ref">TensorWrapper</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK18transformer_engine13TensorWrapper5dtypeEv">
+<span class="target" id="classtransformer__engine_1_1TensorWrapper_1a67ac318b31fcc94edaf7632bc86eaf23"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N18transformer_engine5DTypeE" title="transformer_engine::DType"><span class="n"><span class="pre">DType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dtype</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK18transformer_engine13TensorWrapper5dtypeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the data type of this <a class="reference internal" href="#classtransformer__engine_1_1TensorWrapper"><span class="std std-ref">TensorWrapper</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Data type of this <a class="reference internal" href="#classtransformer__engine_1_1TensorWrapper"><span class="std std-ref">TensorWrapper</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK18transformer_engine13TensorWrapper4dptrEv">
+<span class="target" id="classtransformer__engine_1_1TensorWrapper_1a3e81e32af36f480d5f2a09ebab3de60e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">dptr</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK18transformer_engine13TensorWrapper4dptrEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a raw pointer to the tensor’s data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A raw pointer to tensor’s data. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK18transformer_engine13TensorWrapper4amaxEv">
+<span class="target" id="classtransformer__engine_1_1TensorWrapper_1ad163ca321f62dfa7bf8c5e2734c9acbb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">amax</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK18transformer_engine13TensorWrapper4amaxEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a pointer to the tensor’s amax data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pointer to tensor’s amax data. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK18transformer_engine13TensorWrapper5scaleEv">
+<span class="target" id="classtransformer__engine_1_1TensorWrapper_1a6dea147f11d232e125b7484eaa83ec3f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">scale</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK18transformer_engine13TensorWrapper5scaleEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a pointer to the tensor’s scale data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pointer to tensor’s scale data. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK18transformer_engine13TensorWrapper9scale_invEv">
+<span class="target" id="classtransformer__engine_1_1TensorWrapper_1a6955e94663c6a5f8d54e06ab37a39f2a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">scale_inv</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK18transformer_engine13TensorWrapper9scale_invEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a pointer to the tensor’s inverse of scale data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pointer to tensor’s inverse of scale data. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N18transformer_engine13TensorWrapper7tensor_E">
+<span class="target" id="classtransformer__engine_1_1TensorWrapper_1a3bf6257ed7f7b3ab501d86495f8ee1a5"></span><a class="reference internal" href="#_CPPv410NVTETensor" title="NVTETensor"><span class="n"><span class="pre">NVTETensor</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tensor_</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><a class="headerlink" href="#_CPPv4N18transformer_engine13TensorWrapper7tensor_E" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Wrapped NVTETensor. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="softmax.html" class="btn btn-neutral float-left" title="softmax.h" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="transpose.html" class="btn btn-neutral float-right" title="transpose.h" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+  <style>
+  a:link, a:visited {
+    color: #76b900;
+  }
+
+  a:hover {
+    color: #8c0;
+  }
+
+  html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple)>dt {
+    background: rgba(118, 185, 0, 0.1);
+    color: rgba(59,93,0,1);
+    border-top: solid 3px rgba(59,93,0,1);
+  }
+
+  html.writer-html4 .rst-content dl:not(.docutils) .property, html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple) .property {
+    text-transform: capitalize;
+    display: inline-block;
+    padding-right: 8px;
+  }
+  </style>
+
+  
+
+</body>
+</html>

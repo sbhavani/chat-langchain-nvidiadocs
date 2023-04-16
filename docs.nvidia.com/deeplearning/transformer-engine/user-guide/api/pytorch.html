@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyTorch &mdash; Transformer Engine 0.6.0
+ documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using FP8 with Transformer Engine" href="../examples/fp8_primer.html" />
+    <link rel="prev" title="Framework-specific API" href="framework.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" > 
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Transformer Engine
+          </a>
+              <div class="version">
+                0.6.0
+-f18e677<br/>
+Version select: <select onChange="window.location.href = this.value" onFocus="this.selectedIndex = 0">
+    <option value="https://docs.nvidia.com/deeplearning/transformer-engine/user-guide/index.html" selected>Current release</option>
+    <option value="https://docs.nvidia.com/deeplearning/transformer-engine/archives/index.html">Older releases</option>
+</select>
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+  <style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search, .wy-nav-top {
+      background: #76b900;
+    }
+
+    .wy-menu > p > span.caption-text {
+      color: #76b900;
+    }
+
+    .wy-menu-vertical p {
+      height: 32px;
+      line-height: 32px;
+      padding: 0 1.618em;
+      margin: 12px 0 0;
+      display: block;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 85%;
+      white-space: nowrap;
+    }
+
+    .wy-side-nav-search a:link, .wy-nav-top a:link {
+      color: #fff;
+    }
+    .wy-side-nav-search a:visited, .wy-nav-top a:visited {
+      color: #fff;
+    }
+    .wy-side-nav-search a:hover, .wy-nav-top a:hover {
+      color: #fff;
+    }
+
+    .wy-menu-vertical a:link, .wy-menu-vertical a:visited {
+      color: #d9d9d9
+    }
+
+    .wy-menu-vertical a:active {
+      background-color: #76b900
+    }
+
+    .wy-side-nav-search>div.version {
+      color: rgba(0, 0, 0, 0.3)
+    }
+
+    .wy-nav-content {
+      max-width: 1000px;
+    }
+
+    /* override table width restrictions */
+    .wy-table-responsive table td, .wy-table-responsive table th {
+        /* !important prevents the common CSS stylesheets from
+          overriding this as on RTD they are loaded after this stylesheet */
+        white-space: normal !important;
+    }
+
+    .wy-table-responsive {
+        overflow: visible !important;
+    }
+
+  </style>
+  
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#transformer-engine-in-ngc-containers">Transformer Engine in NGC Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#pip-from-github">pip - from GitHub</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#additional-prerequisites">Additional Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#installation-stable-release">Installation (stable release)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#installation-development-build">Installation (development build)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/quickstart.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/quickstart.html#Overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/quickstart.html#Let’s-build-a-Transformer-layer!">Let’s build a Transformer layer!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/quickstart.html#Meet-Transformer-Engine">Meet Transformer Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/quickstart.html#Fused-TE-Modules">Fused TE Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/quickstart.html#Enabling-FP8">Enabling FP8</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python API documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="common.html">Common API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="common.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="common.html#transformer_engine.common.recipe.Format"><code class="docutils literal notranslate"><span class="pre">Format</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#transformer_engine.common.recipe.DelayedScaling"><code class="docutils literal notranslate"><span class="pre">DelayedScaling</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="framework.html">Framework-specific API</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pyTorch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modules">Modules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#transformer_engine.pytorch.Linear"><code class="docutils literal notranslate"><span class="pre">Linear</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#transformer_engine.pytorch.LayerNorm"><code class="docutils literal notranslate"><span class="pre">LayerNorm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#transformer_engine.pytorch.LayerNormLinear"><code class="docutils literal notranslate"><span class="pre">LayerNormLinear</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#transformer_engine.pytorch.LayerNormMLP"><code class="docutils literal notranslate"><span class="pre">LayerNormMLP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#transformer_engine.pytorch.DotProductAttention"><code class="docutils literal notranslate"><span class="pre">DotProductAttention</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#transformer_engine.pytorch.TransformerLayer"><code class="docutils literal notranslate"><span class="pre">TransformerLayer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#transformer_engine.pytorch.fp8_autocast"><code class="docutils literal notranslate"><span class="pre">fp8_autocast()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#transformer_engine.pytorch.checkpoint"><code class="docutils literal notranslate"><span class="pre">checkpoint()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples and Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../examples/fp8_primer.html">Using FP8 with Transformer Engine</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/fp8_primer.html#Introduction-to-FP8">Introduction to FP8</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/fp8_primer.html#Structure">Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/fp8_primer.html#Mixed-precision-training---a-quick-introduction">Mixed precision training - a quick introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/fp8_primer.html#Mixed-precision-training-with-FP8">Mixed precision training with FP8</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/fp8_primer.html#id1">Using FP8 with Transformer Engine</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/fp8_primer.html#FP8-recipe">FP8 recipe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/fp8_primer.html#FP8-autocasting">FP8 autocasting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/fp8_primer.html#Handling-backward-pass">Handling backward pass</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/fp8_primer.html#Precision">Precision</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/advanced_optimizations.html">Performance Optimizations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/advanced_optimizations.html#Multi-GPU-training">Multi-GPU training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/advanced_optimizations.html#Gradient-accumulation-fusion">Gradient accumulation fusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/advanced_optimizations.html#FP8-weight-caching">FP8 weight caching</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="c/index.html">C/C++ API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="c/activation.html">activation.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="c/cast.html">cast.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="c/gemm.html">gemm.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="c/layer_norm.html">layer_norm.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="c/softmax.html">softmax.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="c/transformer_engine.html">transformer_engine.h</a></li>
+<li class="toctree-l2"><a class="reference internal" href="c/transpose.html">transpose.h</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Transformer Engine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="framework.html">Framework-specific API</a></li>
+      <li class="breadcrumb-item active">pyTorch</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/pytorch.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="pytorch">
+<h1>pyTorch<a class="headerlink" href="#pytorch" title="Permalink to this heading">¶</a></h1>
+<section id="modules">
+<h2>Modules<a class="headerlink" href="#modules" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="transformer_engine.pytorch.Linear">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">transformer_engine.pytorch.</span></span><span class="sig-name descname"><span class="pre">Linear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#transformer_engine.pytorch.Linear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies a linear transformation to the incoming data <span class="math notranslate nohighlight">\(y = xA^T + b\)</span></p>
+<p>On NVIDIA GPUs it is a drop-in replacement for <cite>torch.nn.Linear</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in_features</strong> (<em>int</em>) – size of each input sample.</p></li>
+<li><p><strong>out_features</strong> (<em>int</em>) – size of each output sample.</p></li>
+<li><p><strong>bias</strong> (bool, default = <cite>True</cite>) – if set to <cite>False</cite>, the layer will not learn an additive bias.</p></li>
+<li><p><strong>init_method</strong> (Callable, default = <cite>None</cite>) – used for initializing weights in the following way: <cite>init_method(weight)</cite>.
+When set to <cite>None</cite>, defaults to <cite>torch.nn.init.normal_(mean=0.0, std=0.023)</cite>.</p></li>
+<li><p><strong>parameters_split</strong> (<em>Tuple</em><em>[</em><em>str</em><em>, </em><em>...</em><em>]</em><em>, </em><em>default = None</em>) – if a tuple of strings is provided, the weight and bias parameters of the
+module are exposed as <cite>N</cite> separate <cite>torch.nn.parameter.Parameter`s each,
+split along the first dimension, where `N</cite> is the length of the argument
+and the strings contained are the names of the split parameters.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parallelism parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>sequence_parallel</strong> (bool, default = <cite>False</cite>) – if set to <cite>True</cite>, uses sequence parallelism.</p></li>
+<li><p><strong>tp_group</strong> (ProcessGroup, default = <cite>None</cite>) – tensor parallel process group.</p></li>
+<li><p><strong>tp_size</strong> (<em>int, default = 1</em>) – used as TP (tensor parallel) world size when TP groups are not formed during
+initialization. In this case, users must call the
+<cite>set_tensor_parallel_group(tp_group)</cite> method on the initialized module before the
+forward pass to supply the tensor parallel group needed for tensor and sequence
+parallel collectives.</p></li>
+<li><p><strong>parallel_mode</strong> ({None, ‘Column’, ‘Row’}, default = <cite>None</cite>) – used to decide whether this Linear layer is Column Parallel Linear or Row
+Parallel Linear as described <a class="reference external" href="https://arxiv.org/pdf/1909.08053.pdf">here</a>.
+When set to <cite>None</cite>, no communication is performed.</p></li>
+<li><p><strong>skip_weight_param_allocation</strong> (bool, default = <cite>False</cite>) – if set to <cite>True</cite>, weight parameter is not allocated and must be
+passed as a keyword argument <cite>weight</cite> during the forward pass.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Optimization parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fuse_wgrad_accumulation</strong> (<em>bool, default = ‘False’</em>) – if set to <cite>True</cite>, enables fusing of creation and accumulation of
+the weight gradient. When enabled, it is assumed that the weights
+have an additional <cite>main_grad</cite> attribute (used instead of the
+regular <cite>grad</cite>) which is a pre-allocated buffer of the correct
+size to accumulate gradients in.</p></li>
+<li><p><strong>return_bias</strong> (bool, default = <cite>False</cite>) – when set to <cite>True</cite>, this module will not apply the additive bias itself, but
+instead return the bias value during the forward pass together with the
+output of the linear transformation <span class="math notranslate nohighlight">\(y = xA^T\)</span>. This is useful when
+the bias addition can be fused to subsequent operations.</p></li>
+<li><p><strong>params_dtype</strong> (torch.dtype, default = <cite>torch.float32</cite>) – it controls the type used to allocate the initial parameters. Useful when
+the model is trained with lower precision and the original FP32 parameters
+would not fit in GPU memory.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="transformer_engine.pytorch.Linear.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_first_microbatch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#transformer_engine.pytorch.Linear.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the linear transformation to the input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inp</strong> (<em>torch.Tensor</em>) – Input tensor.</p></li>
+<li><p><strong>weight</strong> (<em>torch.Tensor</em><em>, </em><em>default = None</em>) – An optional weight tensor for the module. This argument is compulsory if module
+is initialized with <cite>skip_weight_param_allocation=True</cite></p></li>
+<li><p><strong>bias</strong> (<em>torch.Tensor</em><em>, </em><em>default = None</em>) – An optional bias tensor for the module. This argument is compulsory if module
+is initialized with <cite>skip_weight_param_allocation=True</cite> and one of <cite>use_bias</cite>
+or <cite>return_bias</cite></p></li>
+<li><p><strong>is_first_microbatch</strong> (<em>{True</em><em>, </em><em>False</em><em>, </em><em>None}</em><em>, </em><em>default = None</em>) – <p>During training using either gradient accumulation or
+pipeline parallelism a minibatch of data is further split
+into microbatches. Between the microbatches of the same minibatch
+the model weights are not updated. Setting this parameter indicates
+whether the current microbatch is the first in a minibatch or not.
+When set, this parameter enables additional optimizations:</p>
+<ul>
+<li><p>during FP8 training, it allows caching of the FP8 versions of
+the weights</p></li>
+<li><p>it also allows skipping gradient accumulation during the
+first microbatch (since it is the first gradient being
+produced)</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="transformer_engine.pytorch.LayerNorm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">transformer_engine.pytorch.</span></span><span class="sig-name descname"><span class="pre">LayerNorm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-5</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#transformer_engine.pytorch.LayerNorm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies Layer Normalization over a mini-batch of inputs as described in
+the paper <a class="reference external" href="https://arxiv.org/abs/1607.06450">Layer Normalization</a></p>
+<div class="math notranslate nohighlight">
+\[y = \frac{x - \mathrm{E}[x]}{ \sqrt{\mathrm{Var}[x] + \varepsilon}} * \gamma + \beta\]</div>
+<p><span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> are learnable affine transform parameters of
+size <code class="xref py py-attr docutils literal notranslate"><span class="pre">hidden_size</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hidden_size</strong> (<em>int</em>) – size of each input sample.</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>default = 1e-5</em>) – a value added to the denominator of layer normalization for numerical stability.</p></li>
+<li><p><strong>sequence_parallel</strong> (bool, default = <cite>False</cite>) – if set to <cite>True</cite>, uses sequence parallelism.</p></li>
+<li><p><strong>params_dtype</strong> (torch.dtype, default = <cite>torch.float32</cite>) – it controls the type used to allocate the initial parameters. Useful when
+the model is trained with lower precision and the original FP32 parameters
+would not fit in GPU memory.</p></li>
+<li><p><strong>zero_centered_gamma</strong> (<em>bool</em><em>, </em><em>default = 'False'</em>) – <p>if set to ‘True’, gamma parameter in LayerNorm is initialized to 0 and
+the LayerNorm formula changes to</p>
+<div class="math notranslate nohighlight">
+\[y = \frac{x - \mathrm{E}[x]}{ \sqrt{\mathrm{Var}[x] + \varepsilon}} *
+(1 + \gamma) + \beta\]</div>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="transformer_engine.pytorch.LayerNormLinear">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">transformer_engine.pytorch.</span></span><span class="sig-name descname"><span class="pre">LayerNormLinear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#transformer_engine.pytorch.LayerNormLinear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies layer normalization followed by linear transformation to the incoming data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in_features</strong> (<em>int</em>) – size of each input sample.</p></li>
+<li><p><strong>out_features</strong> (<em>int</em>) – size of each output sample.</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>default = 1e-5</em>) – a value added to the denominator of layer normalization for numerical stability.</p></li>
+<li><p><strong>bias</strong> (bool, default = <cite>True</cite>) – if set to <cite>False</cite>, the layer will not learn an additive bias.</p></li>
+<li><p><strong>init_method</strong> (Callable, default = <cite>None</cite>) – used for initializing weights in the following way: <cite>init_method(weight)</cite>.
+When set to <cite>None</cite>, defaults to <cite>torch.nn.init.normal_(mean=0.0, std=0.023)</cite>.</p></li>
+<li><p><strong>return_layernorm_output</strong> (bool, default = <cite>False</cite>) – if set to <cite>True</cite>, output of layernorm is returned from the forward
+together with the output of the linear transformation.
+Example use case: residual connection for transformer module is
+taken post layernorm.</p></li>
+<li><p><strong>parameters_split</strong> (<em>Tuple</em><em>[</em><em>str</em><em>, </em><em>...</em><em>]</em><em>, </em><em>default = None</em>) – if a tuple of strings is provided, the weight and bias parameters of the
+module are exposed as <cite>N</cite> separate <cite>torch.nn.parameter.Parameter`s each,
+split along the first dimension, where `N</cite> is the length of the argument
+and the strings contained are the names of the split parameters.</p></li>
+<li><p><strong>zero_centered_gamma</strong> (<em>bool</em><em>, </em><em>default = 'False'</em>) – <p>if set to ‘True’, gamma parameter in LayerNorm is initialized to 0 and
+the LayerNorm formula changes to</p>
+<div class="math notranslate nohighlight">
+\[y = \frac{x - \mathrm{E}[x]}{ \sqrt{\mathrm{Var}[x] + \varepsilon}} *
+(1 + \gamma) + \beta\]</div>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parallelism parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>sequence_parallel</strong> (bool, default = <cite>False</cite>) – if set to <cite>True</cite>, uses sequence parallelism.</p></li>
+<li><p><strong>tp_group</strong> (ProcessGroup, default = <cite>None</cite>) – tensor parallel process group.</p></li>
+<li><p><strong>tp_size</strong> (<em>int, default = 1</em>) – used as TP (tensor parallel) world size when TP groups are not formed during
+initialization. In this case, users must call the
+<cite>set_tensor_parallel_group(tp_group)</cite> method on the initialized module before the
+forward pass to supply the tensor parallel group needed for tensor and sequence
+parallel collectives.</p></li>
+<li><p><strong>parallel_mode</strong> ({None, ‘Column’, ‘Row’}, default = <cite>None</cite>) – used to decide whether this Linear layer is Column Parallel Linear or Row
+Parallel Linear as described <a class="reference external" href="https://arxiv.org/pdf/1909.08053.pdf">here</a>.
+When set to <cite>None</cite>, no communication is performed.</p></li>
+<li><p><strong>skip_weight_param_allocation</strong> (bool, default = <cite>False</cite>) – if set to <cite>True</cite>, weight parameter is not allocated and must be
+passed as a keyword argument <cite>weight</cite> during the forward pass.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Optimization parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fuse_wgrad_accumulation</strong> (<em>bool, default = ‘False’</em>) – if set to <cite>True</cite>, enables fusing of creation and accumulation of
+the weight gradient.</p></li>
+<li><p><strong>return_bias</strong> (bool, default = <cite>False</cite>) – when set to <cite>True</cite>, this module will not apply the additive bias itself, but
+instead return the bias value during the forward pass together with the
+output of the linear transformation <span class="math notranslate nohighlight">\(y = xA^T\)</span>. This is useful when
+the bias addition can be fused to subsequent operations.</p></li>
+<li><p><strong>params_dtype</strong> (torch.dtype, default = <cite>torch.float32</cite>) – it controls the type used to allocate the initial parameters. Useful when
+the model is trained with lower precision and the original FP32 parameters
+would not fit in GPU memory.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="transformer_engine.pytorch.LayerNormLinear.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_first_microbatch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#transformer_engine.pytorch.LayerNormLinear.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply layer normalization to the input followed by a linear transformation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inp</strong> (<em>torch.Tensor</em>) – Input tensor.</p></li>
+<li><p><strong>weight</strong> (<em>torch.Tensor</em><em>, </em><em>default = None</em>) – An optional weight tensor for the module. This argument is compulsory if module
+is initialized with <cite>skip_weight_param_allocation=True</cite></p></li>
+<li><p><strong>bias</strong> (<em>torch.Tensor</em><em>, </em><em>default = None</em>) – An optional bias tensor for the module. This argument is compulsory if module
+is initialized with <cite>skip_weight_param_allocation=True</cite> and one of <cite>use_bias</cite>
+or <cite>return_bias</cite></p></li>
+<li><p><strong>is_first_microbatch</strong> (<em>{True</em><em>, </em><em>False</em><em>, </em><em>None}</em><em>, </em><em>default = None</em>) – <p>During training using either gradient accumulation or
+pipeline parallelism a minibatch of data is further split
+into microbatches. Between the microbatches of the same minibatch
+the model weights are not updated. Setting this parameter indicates
+whether the current microbatch is the first in a minibatch or not.
+When set, this parameter enables additional optimizations:</p>
+<ul>
+<li><p>during FP8 training, it allows caching of the FP8 versions of
+the weights</p></li>
+<li><p>it also allows skipping gradient accumulation during the
+first microbatch (since it is the first gradient being
+produced)</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="transformer_engine.pytorch.LayerNormMLP">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">transformer_engine.pytorch.</span></span><span class="sig-name descname"><span class="pre">LayerNormMLP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ffn_hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#transformer_engine.pytorch.LayerNormMLP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies layer normalization on the input followed by the MLP module, consisting of
+2 successive linear transformations, separated by the GeLU activation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hidden_size</strong> (<em>int</em>) – size of each input sample.</p></li>
+<li><p><strong>ffn_hidden_size</strong> (<em>int</em>) – intermediate size to which input samples are projected.</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>default = 1e-5</em>) – a value added to the denominator of layer normalization for numerical stability.</p></li>
+<li><p><strong>bias</strong> (bool, default = <cite>True</cite>) – if set to <cite>False</cite>, the FC2 layer will not learn an additive bias.</p></li>
+<li><p><strong>init_method</strong> (Callable, default = <cite>None</cite>) – used for initializing FC1 weights in the following way: <cite>init_method(weight)</cite>.
+When set to <cite>None</cite>, defaults to <cite>torch.nn.init.normal_(mean=0.0, std=0.023)</cite>.</p></li>
+<li><p><strong>output_layer_init_method</strong> (Callable, default = <cite>None</cite>) – used for initializing FC2 weights in the following way:
+<cite>output_layer_init_method(weight)</cite>. When set to <cite>None</cite>, defaults to
+<cite>torch.nn.init.normal_(mean=0.0, std=0.023)</cite>.</p></li>
+<li><p><strong>return_layernorm_output</strong> (bool, default = <cite>False</cite>) – if set to <cite>True</cite>, output of layernorm is returned from the forward
+together with the output of the linear transformation.
+Example use case: residual connection for transformer module
+is taken post layernorm.</p></li>
+<li><p><strong>zero_centered_gamma</strong> (<em>bool</em><em>, </em><em>default = 'False'</em>) – <p>if set to ‘True’, gamma parameter in LayerNorm is initialized to 0 and
+the LayerNorm formula changes to</p>
+<div class="math notranslate nohighlight">
+\[y = \frac{x - \mathrm{E}[x]}{ \sqrt{\mathrm{Var}[x] + \varepsilon}} *
+(1 + \gamma) + \beta\]</div>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parallelism parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>set_parallel_mode</strong> (bool, default = <cite>False</cite>) – if set to <cite>True</cite>, FC1 is used as Column Parallel and FC2 is used as Row
+Parallel as described <a class="reference external" href="https://arxiv.org/pdf/1909.08053.pdf">here</a>.</p></li>
+<li><p><strong>sequence_parallel</strong> (bool, default = <cite>False</cite>) – if set to <cite>True</cite>, uses sequence parallelism.</p></li>
+<li><p><strong>tp_group</strong> (ProcessGroup, default = <cite>None</cite>) – tensor parallel process group.</p></li>
+<li><p><strong>tp_size</strong> (<em>int, default = 1</em>) – used as TP (tensor parallel) world size when TP groups are not formed during
+initialization. In this case, users must call the
+<cite>set_tensor_parallel_group(tp_group)</cite> method on the initialized module before the
+forward pass to supply the tensor parallel group needed for tensor and sequence
+parallel collectives.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Optimization parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fuse_wgrad_accumulation</strong> (<em>bool, default = ‘False’</em>) – if set to <cite>True</cite>, enables fusing of creation and accumulation of
+the weight gradient.</p></li>
+<li><p><strong>return_bias</strong> (bool, default = <cite>False</cite>) – when set to <cite>True</cite>, this module will not apply the additive bias itself, but
+instead return the bias value during the forward pass together with the
+output of the linear transformation <span class="math notranslate nohighlight">\(y = xA^T\)</span>. This is useful when
+the bias addition can be fused to subsequent operations.</p></li>
+<li><p><strong>params_dtype</strong> (torch.dtype, default = <cite>torch.float32</cite>) – it controls the type used to allocate the initial parameters. Useful when
+the model is trained with lower precision and the original FP32 parameters
+would not fit in GPU memory.</p></li>
+<li><p><strong>seq_length</strong> (<em>int</em>) – sequence length of input samples. Needed for JIT Warmup, a technique where jit fused
+functions are warmed up before training to ensure same kernels are used for forward
+propogation and activation recompute phase.</p></li>
+<li><p><strong>micro_batch_size</strong> (<em>int</em>) – batch size per training step. Needed for JIT Warmup, a technique where jit
+fused functions are warmed up before training to ensure same kernels are
+used for forward propogation and activation recompute phase.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="transformer_engine.pytorch.LayerNormMLP.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_first_microbatch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#transformer_engine.pytorch.LayerNormMLP.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply layer normalization to the input followed by a feedforward network (MLP Block).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inp</strong> (<em>torch.Tensor</em>) – Input tensor.</p></li>
+<li><p><strong>is_first_microbatch</strong> (<em>{True</em><em>, </em><em>False</em><em>, </em><em>None}</em><em>, </em><em>default = None</em>) – <p>During training using either gradient accumulation or
+pipeline parallelism a minibatch of data is further split
+into microbatches. Between the microbatches of the same minibatch
+the model weights are not updated. Setting this parameter indicates
+whether the current microbatch is the first in a minibatch or not.
+When set, this parameter enables additional optimizations:</p>
+<ul>
+<li><p>during FP8 training, it allows caching of the FP8 versions of
+the weights</p></li>
+<li><p>it also allows skipping gradient accumulation during the
+first microbatch (since it is the first gradient being
+produced)</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="transformer_engine.pytorch.DotProductAttention">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">transformer_engine.pytorch.</span></span><span class="sig-name descname"><span class="pre">DotProductAttention</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_attention_heads</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kv_channels</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#transformer_engine.pytorch.DotProductAttention" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows the model to jointly attend to information from different
+representation subspaces as described in the paper:
+<a class="reference external" href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Argument <code class="xref py py-attr docutils literal notranslate"><span class="pre">attention_mask</span></code> will be ignored in the <cite>forward</cite> call when
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">attn_mask_type</span></code> is set to <cite>“causal”</cite>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For the default attention mechanism, this module executes a non-deterministic version of
+<a class="reference external" href="https://github.com/ksivaman/flash-attention">flash-attn</a> whenever possible in order to
+achieve optimal performance. To observe deterministic behavior, set the environment
+variable <code class="xref py py-attr docutils literal notranslate"><span class="pre">NVTE_ALLOW_NONDETERMINISTIC_ALGO=0</span></code>. In order to disable
+<cite>flash-attn</cite> entirely, set <code class="xref py py-attr docutils literal notranslate"><span class="pre">NVTE_FLASH_ATTN=0</span></code>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_attention_heads</strong> (<em>int</em>) – number of attention heads in the transformer layer.</p></li>
+<li><p><strong>kv_channels</strong> (<em>int</em>) – number of key-value channels.</p></li>
+<li><p><strong>attention_dropout</strong> (<em>float</em><em>, </em><em>default = 0.0</em>) – dropout probability for the dropout op during multi-head attention.</p></li>
+<li><p><strong>attn_mask_type</strong> ({‘causal’, ‘padding’}, default = <cite>causal</cite>) – type of attention mask passed into softmax operation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parallelism parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>sequence_parallel</strong> (bool, default = <cite>False</cite>) – if set to <cite>True</cite>, uses sequence parallelism.</p></li>
+<li><p><strong>tp_size</strong> (<em>int, default = 1</em>) – tensor parallel world size.</p></li>
+<li><p><strong>tp_group</strong> (ProcessGroup, default = <cite>None</cite>) – tensor parallel process group.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="transformer_engine.pytorch.DotProductAttention.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attention_mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkpoint_core_attention</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="headerlink" href="#transformer_engine.pytorch.DotProductAttention.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dot Product Attention Layer.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Argument <code class="xref py py-attr docutils literal notranslate"><span class="pre">attention_mask</span></code> will be ignored when <code class="xref py py-attr docutils literal notranslate"><span class="pre">attn_mask_type</span></code>
+is set to <cite>“causal”</cite>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Input tensors <code class="xref py py-attr docutils literal notranslate"><span class="pre">query_layer</span></code>, <code class="xref py py-attr docutils literal notranslate"><span class="pre">key_layer</span></code>, and <code class="xref py py-attr docutils literal notranslate"><span class="pre">value_layer</span></code>
+must each be of shape (<code class="xref py py-attr docutils literal notranslate"><span class="pre">sequence_length</span></code>, <code class="xref py py-attr docutils literal notranslate"><span class="pre">batch_size</span></code>,
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">num_attention_heads</span></code>, <code class="xref py py-attr docutils literal notranslate"><span class="pre">kv_channels</span></code>). Output of shape
+(<code class="xref py py-attr docutils literal notranslate"><span class="pre">sequence_length</span></code>, <code class="xref py py-attr docutils literal notranslate"><span class="pre">batch_size</span></code>, <code class="xref py py-attr docutils literal notranslate"><span class="pre">num_attention_heads</span></code>
+* <code class="xref py py-attr docutils literal notranslate"><span class="pre">kv_channels</span></code>) is returned.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_layer</strong> (<em>torch.Tensor</em>) – Query tensor.</p></li>
+<li><p><strong>key_layer</strong> (<em>torch.Tensor</em>) – Key tensor.</p></li>
+<li><p><strong>value_layer</strong> (<em>torch.Tensor</em>) – Value tensor.</p></li>
+<li><p><strong>attention_mask</strong> (Optional[torch.Tensor], default = <cite>None</cite>) – Boolean tensor used to mask out softmax input when not using flash-attn.</p></li>
+<li><p><strong>checkpoint_core_attention</strong> (bool, default = <cite>False</cite>) – If true, forward activations for attention are recomputed
+during the backward pass in order to save memory that would
+otherwise be occupied to store the forward activations until
+backprop.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="transformer_engine.pytorch.TransformerLayer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">transformer_engine.pytorch.</span></span><span class="sig-name descname"><span class="pre">TransformerLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ffn_hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_attention_heads</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#transformer_engine.pytorch.TransformerLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>TransformerLayer is made up of an attention block and a feedforward network (MLP).
+This standard layer is based on the paper “Attention Is All You Need”.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Argument <code class="xref py py-attr docutils literal notranslate"><span class="pre">attention_mask</span></code> will be ignored in the <cite>forward</cite> call when
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">self_attn_mask_type</span></code> is set to <cite>“causal”</cite>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hidden_size</strong> (<em>int</em>) – size of each input sample.</p></li>
+<li><p><strong>ffn_hidden_size</strong> (<em>int</em>) – intermediate size to which input samples are projected.</p></li>
+<li><p><strong>num_attention_heads</strong> (<em>int</em>) – number of attention heads in the transformer layer.</p></li>
+<li><p><strong>layernorm_epsilon</strong> (<em>float</em><em>, </em><em>default = 1e-5</em>) – a value added to the denominator of layer normalization
+for numerical stability.</p></li>
+<li><p><strong>hidden_dropout</strong> (<em>float</em><em>, </em><em>default = 0.1</em>) – dropout probability for the dropout op after FC2 layer.</p></li>
+<li><p><strong>attention_dropout</strong> (<em>float</em><em>, </em><em>default = 0.1</em>) – dropout probability for the dropout op during multi-head attention.</p></li>
+<li><p><strong>init_method</strong> (Callable, default = <cite>None</cite>) – used for initializing weights of QKV and FC1 weights in the following way:
+<cite>init_method(weight)</cite>. When set to <cite>None</cite>, defaults to
+<cite>torch.nn.init.normal_(mean=0.0, std=0.023)</cite>.</p></li>
+<li><p><strong>output_layer_init_method</strong> (Callable, default = <cite>None</cite>) – used for initializing weights of PROJ and FC2 in the following way:
+<cite>output_layer_init_method(weight)</cite>. When set to <cite>None</cite>, defaults to
+<cite>torch.nn.init.normal_(mean=0.0, std=0.023)</cite>.</p></li>
+<li><p><strong>apply_residual_connection_post_layernorm</strong> (bool, default = <cite>False</cite>) – if set to <cite>True</cite>, residual connections are taken
+from the output of layer norm (default is taken
+from input of layer norm)</p></li>
+<li><p><strong>layer_number</strong> (int, default = <cite>None</cite>) – layer number of the current <cite>TransformerLayer</cite> when multiple such modules are
+concatenated to form a transformer block.</p></li>
+<li><p><strong>apply_query_key_layer_scaling</strong> (bool, default = <cite>False</cite>) – apply query-key layer scaling during BMM1
+by a factor of <cite>layer_number</cite></p></li>
+<li><p><strong>output_layernorm</strong> (bool, default = <cite>False</cite>) – if set to <cite>True</cite>, layer normalization is applied on the output side,
+after the final dropout-add. default behavior is to apply layer
+normalization on the input side, before the QKV transformation.</p></li>
+<li><p><strong>attention_softmax_in_fp32</strong> (bool, default = <cite>True</cite>) – if set to <cite>False</cite>, softmax is executed in
+the dtype of activation tensors.</p></li>
+<li><p><strong>layer_type</strong> ({‘encoder’, ‘decoder’}, default = <cite>encoder</cite>) – if set to <cite>decoder</cite>, an additional cross-attn block is added after self-attn.
+This can be used for structures like <cite>T5</cite> Transformer in conjunction with the
+<cite>encoder</cite> option.</p></li>
+<li><p><strong>kv_channels</strong> (int, default = <cite>None</cite>) – number of key-value channels. defaults to
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">hidden_size</span></code> / <code class="xref py py-attr docutils literal notranslate"><span class="pre">num_attention_heads</span></code> if <cite>None</cite>.</p></li>
+<li><p><strong>self_attn_mask_type</strong> ({‘causal’, ‘padding’}, default = <cite>causal</cite>) – type of attention mask passed into softmax operation.</p></li>
+<li><p><strong>zero_centered_gamma</strong> (<em>bool</em><em>, </em><em>default = 'False'</em>) – <p>if set to ‘True’, gamma parameter in LayerNorm is initialized to 0 and
+the LayerNorm formula changes to</p>
+<div class="math notranslate nohighlight">
+\[y = \frac{x - \mathrm{E}[x]}{ \sqrt{\mathrm{Var}[x] + \varepsilon}} *
+(1 + \gamma) + \beta\]</div>
+</p></li>
+<li><p><strong>qkv_weight_interleaved</strong> (bool, default = <cite>True</cite>) – if set to <cite>False</cite>, the QKV weight is interpreted as a concatenation of
+query, key, and value weights along the <cite>0th</cite> dimension. The default
+interpretation is that the individual <cite>q</cite>, <cite>k</cite>, and <cite>v</cite> weights for each
+attention head are interleaved. This parameter is set to <cite>False</cite> when
+using <code class="xref py py-attr docutils literal notranslate"><span class="pre">fuse_qkv_params=False</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parallelism parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>set_parallel_mode</strong> (bool, default = <cite>False</cite>) – if set to <cite>True</cite>, QKV and FC1 layers are used as Column Parallel
+whereas PROJ and FC2 is used as Row Parallel as described
+<a class="reference external" href="https://arxiv.org/pdf/1909.08053.pdf">here</a>.</p></li>
+<li><p><strong>sequence_parallel</strong> (bool, default = <cite>False</cite>) – if set to <cite>True</cite>, uses sequence parallelism.</p></li>
+<li><p><strong>tp_group</strong> (ProcessGroup, default = <cite>None</cite>) – tensor parallel process group.</p></li>
+<li><p><strong>tp_size</strong> (<em>int, default = 1</em>) – used as TP (tensor parallel) world size when TP groups are not formed during
+initialization. In this case, users must call the
+<cite>set_tensor_parallel_group(tp_group)</cite> method on the initialized module before the
+forward pass to supply the tensor parallel group needed for tensor and sequence
+parallel collectives.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Optimization parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fuse_wgrad_accumulation</strong> (<em>bool, default = ‘False’</em>) – if set to <cite>True</cite>, enables fusing of creation and accumulation of
+the weight gradient.</p></li>
+<li><p><strong>params_dtype</strong> (torch.dtype, default = <cite>torch.float32</cite>) – it controls the type used to allocate the initial parameters. Useful when
+the model is trained with lower precision and the original FP32 parameters
+would not fit in GPU memory.</p></li>
+<li><p><strong>seq_length</strong> (<em>int</em>) – sequence length of input samples. Needed for JIT Warmup, a technique where jit
+fused functions are warmed up before training to ensure same kernels are used for
+forward propogation and activation recompute phase.</p></li>
+<li><p><strong>micro_batch_size</strong> (<em>int</em>) – batch size per training step. Needed for JIT Warmup, a technique where jit
+fused functions are warmed up before training to ensure same kernels are
+used for forward propogation and activation recompute phase.</p></li>
+<li><p><strong>drop_path_rate</strong> (<em>float, default = 0.0</em>) – when &gt; 0.0, applies stochastic depth per sample in
+the main path of the residual block.</p></li>
+<li><p><strong>fuse_qkv_params</strong> (<em>bool, default = ‘False’</em>) – if set to <cite>True</cite>, <cite>TransformerLayer</cite> module exposes a single fused
+parameter for query-key-value. This enables optimizations such as QKV
+fusion without concatentations/splits and also enables the argument
+<cite>fuse_wgrad_accumulation</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="transformer_engine.pytorch.TransformerLayer.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attention_mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enc_dec_attn_mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_first_microbatch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkpoint_core_attention</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inference_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="headerlink" href="#transformer_engine.pytorch.TransformerLayer.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transformer Layer: attention block and a feedforward network (MLP)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Argument <code class="xref py py-attr docutils literal notranslate"><span class="pre">attention_mask</span></code> will be ignored when <code class="xref py py-attr docutils literal notranslate"><span class="pre">self_attn_mask_type</span></code>
+is set to <cite>“causal”</cite>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hidden_states</strong> (<em>torch.Tensor</em>) – Input tensor.</p></li>
+<li><p><strong>attention_mask</strong> (Optional[torch.Tensor], default = <cite>None</cite>) – Boolean tensor used to mask out self-attention softmax input.</p></li>
+<li><p><strong>encoder_output</strong> (Optional[torch.Tensor], default = <cite>None</cite>) – Output of the encoder block to be fed into the decoder block if using
+<cite>layer_type=”decoder”</cite>.</p></li>
+<li><p><strong>enc_dec_attn_mask</strong> (Optional[torch.Tensor], default = <cite>None</cite>) – Boolean tensor used to mask out inter-attention softmax input if using
+<cite>layer_type=”decoder”</cite>.</p></li>
+<li><p><strong>is_first_microbatch</strong> (<em>{True</em><em>, </em><em>False</em><em>, </em><em>None}</em><em>, </em><em>default = None</em>) – <p>During training using either gradient accumulation or
+pipeline parallelism a minibatch of data is further split
+into microbatches. Between the microbatches of the same minibatch
+the model weights are not updated. Setting this parameter indicates
+whether the current microbatch is the first in a minibatch or not.
+When set, this parameter enables additional optimizations:</p>
+<ul>
+<li><p>during FP8 training, it allows caching of the FP8 versions of
+the weights</p></li>
+<li><p>it also allows skipping gradient accumulation during the
+first microbatch (since it is the first gradient being
+produced)</p></li>
+</ul>
+</p></li>
+<li><p><strong>checkpoint_core_attention</strong> (bool, default = <cite>False</cite>) – If true, forward activations for core attention are recomputed
+during the backward pass in order to save memory that would
+otherwise be occupied to store the forward activations until
+backprop.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="transformer_engine.pytorch.fp8_autocast">
+<span class="sig-prename descclassname"><span class="pre">transformer_engine.pytorch.</span></span><span class="sig-name descname"><span class="pre">fp8_autocast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calibrating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp8_recipe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="common.html#transformer_engine.common.recipe.DelayedScaling" title="transformer_engine.common.recipe.DelayedScaling"><span class="pre">DelayedScaling</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp8_group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProcessGroup</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#transformer_engine.pytorch.fp8_autocast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Context manager for FP8 usage.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fp8_autocast</span><span class="p">(</span><span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Support for FP8 in the Linear layer of Transformer Engine is currently limited to tensors
+with shapes where both dimensions are divisible by 16. In terms of the input to the full
+Transformer network, this typically requires padding sequence length to be multiple of 16.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>enabled</strong> (bool, default = <cite>False</cite>) – whether or not to enable fp8</p></li>
+<li><p><strong>calibrating</strong> (bool, default = <cite>False</cite>) – calibration mode allows collecting statistics such as amax and scale
+data of fp8 tensors even when executing without fp8 enabled. This is
+useful for saving an inference ready fp8 checkpoint while training
+using a higher precision.</p></li>
+<li><p><strong>fp8_recipe</strong> (recipe.DelayedScaling, default = <cite>None</cite>) – recipe used for FP8 training.</p></li>
+<li><p><strong>fp8_group</strong> (torch._C._distributed_c10d.ProcessGroup, default = <cite>None</cite>) – distributed group over which amaxes for the fp8 tensors
+are reduced at the end of each training step.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="transformer_engine.pytorch.checkpoint">
+<span class="sig-prename descclassname"><span class="pre">transformer_engine.pytorch.</span></span><span class="sig-name descname"><span class="pre">checkpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distribute_saved_activations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_cuda_rng_tracker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tp_group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProcessGroup</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#transformer_engine.pytorch.checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checkpoint a part of the model by trading compute for memory. This function is based on
+<a class="reference external" href="https://pytorch.org/docs/stable/checkpoint.html">torch.utils.checkpoint.checkpoint</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is the user’s responsibility to ensure identical behavior when calling
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">function</span></code> from the forward and backward pass. If different output is
+produced (e.g. due to global state), then the checkpointed version won’t
+be numerically equivalent.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The tuple <code class="xref py py-attr docutils literal notranslate"><span class="pre">args</span></code> must contain only tensors (or <code class="xref py py-attr docutils literal notranslate"><span class="pre">None</span></code>) in order to comply with
+PyTorch’s <code class="xref py py-attr docutils literal notranslate"><span class="pre">save_for_backward</span></code> method. <code class="xref py py-attr docutils literal notranslate"><span class="pre">function</span></code> must be callable to produce
+valid outputs with the inputs <code class="xref py py-attr docutils literal notranslate"><span class="pre">args</span></code> and <code class="xref py py-attr docutils literal notranslate"><span class="pre">kwargs</span></code>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>function</strong> (<em>Callable</em>) – whether or not to enable fp8</p></li>
+<li><p><strong>distribute_saved_activations</strong> (<em>bool</em>) – if set to <cite>True</cite>, the first tensor argument is distributed across the
+specified tensor parallel group (<cite>tp_group</cite>) before saving it for the
+backward pass.</p></li>
+<li><p><strong>get_cuda_rng_tracker</strong> (<cite>Callable</cite>) – python function with the functionality to retrieve a state via
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">state</span> <span class="pre">=</span> <span class="pre">get_cuda_rng_tracker().get_states()</span></code> and to reset the state via
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">get_cuda_rng_tracker().set_states(state)</span></code>. This is used to ensure any
+extra cuda rng state or general global state can be reproduced across the 2
+forward phases; original and recompute.</p></li>
+<li><p><strong>tp_group</strong> (ProcessGroup, default = <cite>None</cite>) – tensor parallel process group.</p></li>
+<li><p><strong>args</strong> (<em>tuple</em>) – tuple of torch tensors for inputs to <code class="xref py py-attr docutils literal notranslate"><span class="pre">function</span></code>.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – dictionary of string keys for keyword arguments to <code class="xref py py-attr docutils literal notranslate"><span class="pre">function</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="framework.html" class="btn btn-neutral float-left" title="Framework-specific API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../examples/fp8_primer.html" class="btn btn-neutral float-right" title="Using FP8 with Transformer Engine" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+  <style>
+  a:link, a:visited {
+    color: #76b900;
+  }
+
+  a:hover {
+    color: #8c0;
+  }
+
+  html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple)>dt {
+    background: rgba(118, 185, 0, 0.1);
+    color: rgba(59,93,0,1);
+    border-top: solid 3px rgba(59,93,0,1);
+  }
+
+  html.writer-html4 .rst-content dl:not(.docutils) .property, html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple) .property {
+    text-transform: capitalize;
+    display: inline-block;
+    padding-right: 8px;
+  }
+  </style>
+
+  
+
+</body>
+</html>
